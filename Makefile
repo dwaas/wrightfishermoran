@@ -15,10 +15,10 @@
 
 
 
-CC=g++
+CC=gcc
 #ROOTLIBS= `root-config --libs`
 #ROOTCFLAGS= `root-config --cflags`
-FLAGS= -Wall -march=native -ftree-loop-im -pg #-fprofile-arcs -ftest-coverage #-funroll-loops 
+FLAGS+= -Wall -march=native -ftree-loop-im -pg -std=c++11#-fprofile-arcs -ftest-coverage #-funroll-loops 
 ENDFLAGS= 
 OBJS=main.o genetic_drift.o
 DEPS= genetic_drift.h
@@ -34,17 +34,20 @@ debug: clean new $(EXE)
 	gdb --args ./$(EXE) $(ARGS)
 
 $(EXE): $(OBJS)
-	$(CC) -o $@ $^ $(DEBUGFLAG) $(ENDFLAGS)
+	$(CC) -o $@ $^ $(DEBUGFLAGS) $(ENDFLAGS)
 
-%.o:  %.c $(DEPS) 
+%.o:  %.cpp $(DEPS) 
 	$(CC) -c -o $@ $< $(DEBUGFLAGS)
 else 
 $(EXE): $(OBJS)
 	$(CC) -o $@ $^ $(RUNFLAGS) $(ENDFLAGS)
 
-%.o:  %.c_ $(DEPS) 
+%.o:  %.cpp $(DEPS) 
 	$(CC) -c -o $@ $< $(RUNFLAGS)
 endif
+
+#all:
+#	$(CC) $(FLAGS) %.cpp -o $(EXE)
 
 clean: 
 	rm -f *.o $(EXE) gmon.out prof *.gcov *gcno
