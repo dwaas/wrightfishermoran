@@ -29,7 +29,7 @@ ReplicateGene (Population &pop)
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  KillGene
- *  Description:  
+ *  Description: randomly pick one population element and kill it
  * =====================================================================================
  */
 	void

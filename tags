@@ -3,28 +3,27 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.8	//
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 ARGS	Makefile	/^ARGS= .$/;"	m
 Allele	genetic_drift.h	/^typedef unsigned Allele; \/\/ no negative numbers allowed$/;"	t
-CC	Makefile	/^CC=gpp$/;"	m
+CC	Makefile	/^CC=g++$/;"	m
 DEBUGFLAGS	Makefile	/^DEBUGFLAGS= -O0 -g $(FLAGS)$/;"	m
 DEPS	Makefile	/^DEPS= genetic_drift.h$/;"	m
 ENDFLAGS	Makefile	/^ENDFLAGS= $/;"	m
 EXE	Makefile	/^EXE= WFM$/;"	m
-FLAGS	Makefile	/^FLAGS= -Wall -march=native -ftree-loop-im -pg #-fprofile-arcs -ftest-coverage #-funroll-loops $/;"	m
+FLAGS	Makefile	/^FLAGS= -Wall -march=native -ftree-loop-im -pg -std=c++11#-fprofile-arcs -ftest-coverage #-funroll-loops $/;"	m
 GENETIC_DRIFT_INCLUDED	genetic_drift.h	2;"	d
 Gene	genetic_drift.h	/^	Gene() { allele_ = rand() % kNumAlleles; } \/\/ generate either 0 or 1$/;"	f	class:Gene
 Gene	genetic_drift.h	/^	Gene(Allele anAllele) { allele_ = anAllele % kNumAlleles; } \/\/ modulus guards against bad numbers$/;"	f	class:Gene
 Gene	genetic_drift.h	/^class Gene$/;"	c
-KillGene	genetic_drift.cpp	/^KillGene ( Population const &pop)$/;"	f
+KillGene	genetic_drift.cpp	/^KillGene ( Population &pop)$/;"	f
 OBJS	Makefile	/^OBJS=main.o genetic_drift.o$/;"	m
-Population	genetic_drift.h	/^typedef std::list < Gene > Population;$/;"	t
+Population	genetic_drift.h	/^typedef std::vector < Gene > Population;$/;"	t
 RUNFLAGS	Makefile	/^RUNFLAGS= -O3 $(FLAGS)$/;"	m
-ReplicateGene	genetic_drift.cpp	/^ReplicateGene (Population const &pop)$/;"	f
+ReplicateGene	genetic_drift.cpp	/^ReplicateGene (Population &pop)$/;"	f
 allele	genetic_drift.h	/^	Allele allele(){return allele_; }$/;"	f	class:Gene
 allele_	genetic_drift.h	/^	Allele allele_;$/;"	m	class:Gene
 debug	Makefile	/^debug=0$/;"	m
 kNumAlleles	genetic_drift.h	/^static const unsigned kNumAlleles = 2;$/;"	v
 main	main.cpp	/^int main(int argc,char* argv[])$/;"	f
-operator <<	genetic_drift.cpp	/^operator << ( std::ostream &os, const Gene &obj )$/;"	f
-operator >>	genetic_drift.cpp	/^operator >> ( std::istream &is, Gene &obj )$/;"	f
+operator <<	genetic_drift.cpp	/^operator << ( std::ostream &os, Gene &obj ) $/;"	f

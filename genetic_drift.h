@@ -8,7 +8,7 @@
 #include <vector>// std::vector
 #include <algorithm> // std::count
 #include <ostream> //std::ostream
-#include <istream>
+
 
 static const unsigned kNumAlleles = 2;
 typedef unsigned Allele; // no negative numbers allowed
@@ -44,9 +44,10 @@ std::ostream & operator << ( std::ostream &os, Gene &obj );
 
 typedef std::vector < Gene > Population;
 
-
 void ReplicateGene (Population &pop);
 void KillGene (Population &pop);
+//tested
+
 //double GeneRatio (Population const &pop);
 
 

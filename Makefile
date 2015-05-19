@@ -18,7 +18,7 @@
 CC=g++
 #ROOTLIBS= `root-config --libs`
 #ROOTCFLAGS= `root-config --cflags`
-FLAGS+= -Wall -march=native -ftree-loop-im -pg -std=c++11#-fprofile-arcs -ftest-coverage #-funroll-loops 
+FLAGS= -Wall -march=native -ftree-loop-im -pg -std=c++11#-fprofile-arcs -ftest-coverage #-funroll-loops 
 ENDFLAGS= 
 OBJS=main.o genetic_drift.o
 DEPS= genetic_drift.h
