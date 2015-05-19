@@ -1,6 +1,9 @@
 #include <iostream>
+
 #include <stdlib.h> //srand()
 #include <time.h> //time()
+#include <random>
+
 
 #include "genetic_drift.h"
 

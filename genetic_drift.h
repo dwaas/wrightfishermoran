@@ -8,7 +8,7 @@
 #include <vector>// std::vector
 #include <algorithm> // std::count
 #include <ostream> //std::ostream
-
+#include <istream>
 
 static const unsigned kNumAlleles = 2;
 typedef unsigned Allele; // no negative numbers allowed

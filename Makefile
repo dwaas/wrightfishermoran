@@ -15,7 +15,7 @@
 
 
 
-CC=gcc
+CC=g++
 #ROOTLIBS= `root-config --libs`
 #ROOTCFLAGS= `root-config --cflags`
 FLAGS+= -Wall -march=native -ftree-loop-im -pg -std=c++11#-fprofile-arcs -ftest-coverage #-funroll-loops 
