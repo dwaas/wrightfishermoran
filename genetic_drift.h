@@ -7,6 +7,7 @@
 
 #include <vector>// std::vector
 #include <algorithm> // std::count
+
 #include <ostream> //std::ostream
 
 
@@ -16,7 +17,12 @@ typedef unsigned Allele; // no negative numbers allowed
 
 class Gene
 {
- public:
+
+friend std::ostream & operator << ( std::ostream &os, Gene &obj );
+friend bool operator == (const Gene &a, const Gene &b){ return (a.allele_ == b.allele_); };
+friend bool operator != (const Gene &a, const Gene &b){ return (a.allele_ != b.allele_); };
+	
+public:
 	
 	Allele allele(){return allele_; }
 
@@ -29,9 +35,6 @@ class Gene
 	Allele allele_;
 
 };
-
-std::ostream & operator << ( std::ostream &os, Gene &obj );
-
 
 
 
@@ -46,9 +49,7 @@ typedef std::vector < Gene > Population;
 
 void ReplicateGene (Population &pop);
 void KillGene (Population &pop);
-//tested
-
-//double GeneRatio (Population const &pop);
+double GeneRatio (Population const &pop);
 
 
 #endif // GENETIC_DRIFT_INCLUDED

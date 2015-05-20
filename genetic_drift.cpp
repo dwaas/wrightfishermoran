@@ -9,6 +9,7 @@ operator << ( std::ostream &os, Gene &obj )
 }		/* -----  end of function operator <<  ----- */
 
 
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  ReplicateGene
@@ -16,7 +17,7 @@ operator << ( std::ostream &os, Gene &obj )
  * =====================================================================================
  */
 
-void
+	void
 ReplicateGene (Population &pop)
 {
 	unsigned selected_gene = rand() % pop.size();
@@ -45,17 +46,15 @@ KillGene ( Population &pop)
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  GeneRatio
- *  Description:  
+ *  Description: returns the ratio of alleles = 0 over the population
  * =====================================================================================
  */
-
-	/*  
 	double
-GeneRatio (Population const &pop, Gene const &gene)
+GeneRatio (Population const &pop)
 {
-	
-
+	double ratio = std::count(pop.begin(), pop.end(), 0) / (double) pop.size();
 	return ratio;
-}*/		/* -----  end of function GeneRatio  ----- */
+}		/* -----  end of function GeneRatio  ----- */
+
 
 
