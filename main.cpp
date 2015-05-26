@@ -7,16 +7,28 @@
 
 #include "genetic_drift.h"
 
+
 //TODO documentation
-// build functions M(n, t) and WF(n, t)
-//const in << operators
-//random
-//encapsulate print vector functions
+//TODO cvim style formatting/ comments
+//TODO const in << operators
+//TODO random
+//TODO encapsulate print vector functions
+//TODO inline funcs
+//TODO check consts
+//TODO names
+//TODO fitting
+//TODO parallelisation
+//TODO inisialisation lists
+
+
+//HYPOTHESES:
+//1) discrete derivative
+//2) discrete > continuous model(omitted fitting)
+//3) gegenbauer is bad
 
 
 int main(int argc,char* argv[])
 {
-	static const unsigned kMaxTimestep = 100000;
 
 /* 	srand((unsigned)time(0));
 	Gene a;
@@ -43,13 +55,11 @@ int main(int argc,char* argv[])
 
 */
 
-	Population wright_fisher(100), moran(100);
+//	Population wright_fisher(100), moran(100);
+
+
+/* 
 //WF time evolution	
-	for (unsigned timestep = 0; timestep < kMaxTimestep; ++timestep)
-	{
-		ReplicateGene(wright_fisher);
-		GeneRatio(wright_fisher); // our datapoint
-	}
 	
 		std::cout << "The ratio of 0 in wright_fisher is: " << GeneRatio(wright_fisher) << std::endl;
 //Moran time evolution
@@ -61,7 +71,7 @@ int main(int argc,char* argv[])
 	}	
 
 		std::cout << "The ratio of 0 in moran is: " << GeneRatio(moran) << std::endl;
-
+*/
 	return 0;
 }
 

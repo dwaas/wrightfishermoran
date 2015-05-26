@@ -1,6 +1,5 @@
 #include "genetic_drift.h"
 
-
 	std::ostream &
 operator << ( std::ostream &os, Gene &obj ) 
 {
@@ -10,51 +9,79 @@ operator << ( std::ostream &os, Gene &obj )
 
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  ReplicateGene
- *  Description:  randomly pick one population element and reproduce it
- * =====================================================================================
+/*
+ *--------------------------------------------------------------------------------------
+ *       Class:  Population
+ *      Method:  Population
+ * Description:  constructor
+ *--------------------------------------------------------------------------------------
  */
-
-	void
-ReplicateGene (Population &pop)
+// temporarily only WF
+Population::Population (const unsigned kMaxTimestep, const unsigned kInitialNum)
 {
-	unsigned selected_gene = rand() % pop.size();
-	pop.push_back( pop[selected_gene] );
+	for (unsigned timestep = 0; timestep < kMaxTimestep; ++timestep)
+	{
+		unsigned selected_gene = rand() % pop.size(); 
+//implement with lambda		
+		m_gene_vec.push_back( m_gene_vec[selected_gene] ); //gene reproduction
+		m_gene_vec.erase( m_gene_vec.begin() + selected_gene ); //gene death
 
-	return;
-}		/* -----  end of function ReplicateGene  ----- */
 
+	}
+//make more readable
+	double ratio = std::count(m_gene_vec.begin(), m_gene_vec.end(), 0) / (double) m_gene_vec.size();
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  KillGene
- *  Description: randomly pick one population element and kill it
- * =====================================================================================
+	std::cout << "WF population was succesfully initialised." << std::endl;
+	std::cout << "Gene ratio is:" << ratio << std::endl;
+
+}  /* -----  end of method Population::Population  (constructor)  ----- */
+
+/*
+ *--------------------------------------------------------------------------------------
+ *       Class:  Population
+ *      Method:  Population
+ * Description:  copy constructor
+ *--------------------------------------------------------------------------------------
  */
-	void
-KillGene ( Population &pop)
+Population::Population ( const Population &other )
 {
-	unsigned selected_gene = rand() % pop.size();
-	pop.erase( pop.begin() + selected_gene );
-
-	return;
-}		/* -----  end of function KillGene  ----- */
+	m_gene_vec = other.m_gene_vec;
+	m_probability_function = other.m_probability_function;
+//check whether general function HAS assignment operator
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  GeneRatio
- *  Description: returns the ratio of alleles = 0 over the population
- * =====================================================================================
+}  /* -----  end of method Population::Population  (copy constructor)  ----- */
+
+/*
+ *--------------------------------------------------------------------------------------
+ *       Class:  Population
+ *      Method:  ~Population
+ * Description:  destructor
+ *--------------------------------------------------------------------------------------
  */
-	double
-GeneRatio (Population const &pop)
+Population::~Population ()
 {
-	double ratio = std::count(pop.begin(), pop.end(), 0) / (double) pop.size();
-	return ratio;
-}		/* -----  end of function GeneRatio  ----- */
+}  /* -----  end of method Population::~Population  (destructor)  ----- */
+
+/*
+ *--------------------------------------------------------------------------------------
+ *       Class:  Population
+ *      Method:  operator =
+ * Description:  assignment operator
+ *--------------------------------------------------------------------------------------
+ */
+	Population&
+Population::operator = ( const Population &other )
+{
+	if ( this != &other ) 
+	{
+		m_gene_vec = other.m_gene_vec;
+		m_probability_function = other.m_probability_function;
+	}
+	return *this;
+}  /* -----  end of method Population::operator =  (assignment operator)  ----- */
+
+
 
 
 

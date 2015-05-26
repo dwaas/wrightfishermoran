@@ -1,3 +1,22 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  genetic_drift.h
+ *
+ *    Description:  jump to line40 for Gene; last line for Population
+ *
+ *        Version:  1.0
+ *        Created:  05/26/2015 05:35:24 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Devin Waas (), dsc.waas@gmail.com
+ *   Organization:  
+ *
+ * =====================================================================================
+ */
+
+
 #ifndef GENETIC_DRIFT_INCLUDED
 #define GENETIC_DRIFT_INCLUDED
 
@@ -11,45 +30,91 @@
 #include <ostream> //std::ostream
 
 
-static const unsigned kNumAlleles = 2;
-typedef unsigned Allele; // no negative numbers allowed
 
-
+/*
+ * =====================================================================================
+ *        Class:  Gene
+ *  Description:  
+ * =====================================================================================
+ */
 class Gene
 {
+	public:
 
-friend std::ostream & operator << ( std::ostream &os, Gene &obj );
-friend bool operator == (const Gene &a, const Gene &b){ return (a.allele_ == b.allele_); };
-friend bool operator != (const Gene &a, const Gene &b){ return (a.allele_ != b.allele_); };
+		static const unsigned kNumAlleles = 2;
+		typedef unsigned Allele; // no negative numbers allowed
+
+	/* ====================  LIFECYCLE     ======================================= */
+		Gene (){ m_allele = rand() % kNumAlleles; };                             /* constructor      */
+		Gene(const Allele &other) { m_allele = other % kNumAlleles; }; // kindof copy constructor
+		Gene ( const Gene &other ) {m_allele = other.m_allele; };   /* copy constructor */
+		~Gene ();                            /* destructor       */
+
+
+		/* ====================  ACCESSORS     ======================================= */
+
+		Allele allele(){return m_allele; }
+
+		/* ====================  OPERATORS     ======================================= */
+
+		Gene& operator = ( const Gene &other ); /* assignment operator */
+
+	protected:
+
+	private:
+		/* ====================  DATA MEMBERS  ======================================= */
+	Allele m_allele;
+
+		/* ====================  FRIENDSHIP  ======================================= */
+
+	friend std::ostream & operator << ( std::ostream &os, Gene &obj );
+	friend bool operator == (const Gene &a, const Gene &b){ return (a.m_allele == b.m_allele); };
+	friend bool operator != (const Gene &a, const Gene &b){ return (a.m_allele != b.m_allele); };
 	
-public:
-	
-	Allele allele(){return allele_; }
 
-	Gene(Allele anAllele) { allele_ = anAllele % kNumAlleles; } // modulus guards against bad numbers
-	Gene() { allele_ = rand() % kNumAlleles; } // generate either 0 or 1
+}; /* -----  end of class Gene  ----- */
 
- protected:
-	
- private:
-	Allele allele_;
 
-};
 
 
 
 /*
  * =====================================================================================
  *        Class:  Population
- *  Description: wrapper for vector of Genes 
+ *  Description:  
  * =====================================================================================
  */
+class Population
+{
+	public:
+	
+		typedef std::vector < Gene > GeneVec;
 
-typedef std::vector < Gene > Population;
+		/* ====================  LIFECYCLE     ======================================= */
+		Population ( const unsigned kMaxTimesteps, const unsigned kInitialNum);                             /* constructor      */
+		Population ( const Population &other );   /* copy constructor */
+		~Population ();                            /* destructor       */
 
-void ReplicateGene (Population &pop);
-void KillGene (Population &pop);
-double GeneRatio (Population const &pop);
+		/* ====================  ACCESSORS     ======================================= */
+		
+		GeneVec gene_vec(){return m_gene_vec; }
+		double probability_function(){return m_probability_function; }
+		/* ====================  MUTATORS      ======================================= */
+		//no need to manually change neither gene_vec nor probability_function
 
+		/* ====================  OPERATORS     ======================================= */
+
+		Population& operator = ( const Population &other ); /* assignment operator */
+
+
+	protected:
+
+	private:
+		/* ====================  DATA MEMBERS  ======================================= */
+		
+		double m_probability_function(unsigned n, unsigned t);
+		GeneVec m_gene_vec;
+
+}; /* -----  end of class Population  ----- */
 
 #endif // GENETIC_DRIFT_INCLUDED
