@@ -1,6 +1,3 @@
-#include <iostream>
-
-#include <stdlib.h> //srand()
 #include <time.h> //time()
 #include <random>
 
@@ -18,7 +15,6 @@
 //TODO names
 //TODO fitting
 //TODO parallelisation
-//TODO inisialisation lists
 
 
 //HYPOTHESES:
@@ -29,35 +25,26 @@
 
 int main(int argc,char* argv[])
 {
+	static const unsigned kMaxTimestep = 10000, kInitialNum = 100, kMaxNum = 10000;
 
-/* 	srand((unsigned)time(0));
-	Gene a;
-	std::cout << "Gene a = " << a << std::endl;
+	for(unsigned num = kInitialNum; num < kMaxNum; ++num)
+	{
+		Population wright_fisher(num, kMaxTimestep, [](GeneVec& v)
+				{		
+					unsigned selected_gene = rand() % v.size();
+					v.push_back( v[selected_gene] );
+				}
+			);
 
-	Gene b(2);
-	std::cout << "Gene b = " << b << std::endl;
-
-
-	Population test_pop(10);
-
-	std::cout << "The size of test_pop is: " << test_pop.size() << std::endl;
-
-	std::cout << "The contents of test_pop are: ";
-	for (auto it = test_pop.begin(); it != test_pop.end(); it++)
-		std::cout << *it  << ' ';
-
-	std::cout << '\n';
-
-	std::cout << "The ratio of 0 in test_pop is: " << GeneRatio(test_pop) << std::endl;
-
-	KillGene(test_pop);
-	// 	test_pop.push_back(b);
-
-*/
-
-//	Population wright_fisher(100), moran(100);
-
-
+		Population moran(num, kMaxTimestep, [](GeneVec& v)
+				{		
+					unsigned selected_gene = rand() % v.size();
+					v.push_back( v[selected_gene] );
+					v.erase( v.begin() + selected_gene ); //gene death
+				}
+			);
+	}
+		
 /* 
 //WF time evolution	
 	

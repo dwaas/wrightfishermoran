@@ -26,6 +26,7 @@
 
 #include <vector>// std::vector
 #include <algorithm> // std::count
+#include <functional> // std::function
 
 #include <ostream> //std::ostream
 
@@ -45,15 +46,15 @@ class Gene
 		typedef unsigned Allele; // no negative numbers allowed
 
 	/* ====================  LIFECYCLE     ======================================= */
-		Gene (){ m_allele = rand() % kNumAlleles; };                             /* constructor      */
-		Gene(const Allele &other) { m_allele = other % kNumAlleles; }; // kindof copy constructor
-		Gene ( const Gene &other ) {m_allele = other.m_allele; };   /* copy constructor */
+		Gene () : m_allele(rand() % kNumAlleles) {};    /* constructor      */
+		Gene ( const Allele &other )  : m_allele( other % kNumAlleles) {}; // kindof copy constructor
+		Gene ( const Gene &other ) : m_allele(other.m_allele) {};   /* copy constructor */
 		~Gene ();                            /* destructor       */
 
 
 		/* ====================  ACCESSORS     ======================================= */
 
-		Allele allele(){return m_allele; }
+		Allele allele() const{return m_allele; }
 
 		/* ====================  OPERATORS     ======================================= */
 
@@ -77,6 +78,7 @@ class Gene
 
 
 
+		typedef std::vector < Gene > GeneVec;
 
 /*
  * =====================================================================================
@@ -88,17 +90,18 @@ class Population
 {
 	public:
 	
-		typedef std::vector < Gene > GeneVec;
+		typedef	std::vector < std::vector< unsigned > > TwoVarFunc;
 
 		/* ====================  LIFECYCLE     ======================================= */
-		Population ( const unsigned kMaxTimesteps, const unsigned kInitialNum);                             /* constructor      */
+		Population ( const unsigned kInitialNum, const unsigned kMaxTimesteps,  
+			std::function<void (GeneVec &) >PopEvolution);                             /* constructor      */
+		
 		Population ( const Population &other );   /* copy constructor */
 		~Population ();                            /* destructor       */
 
 		/* ====================  ACCESSORS     ======================================= */
-		
-		GeneVec gene_vec(){return m_gene_vec; }
-		double probability_function(){return m_probability_function; }
+		GeneVec gene_vec() const {return m_gene_vec; }
+		TwoVarFunc probability_function(){return m_probability_function; }
 		/* ====================  MUTATORS      ======================================= */
 		//no need to manually change neither gene_vec nor probability_function
 
@@ -112,8 +115,8 @@ class Population
 	private:
 		/* ====================  DATA MEMBERS  ======================================= */
 		
-		double m_probability_function(unsigned n, unsigned t);
 		GeneVec m_gene_vec;
+		TwoVarFunc m_probability_function;
 
 }; /* -----  end of class Population  ----- */
 

@@ -5,28 +5,38 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 ARGS	Makefile	/^ARGS= .$/;"	m
-Allele	genetic_drift.h	/^typedef unsigned Allele; \/\/ no negative numbers allowed$/;"	t
+Allele	genetic_drift.h	/^		typedef unsigned Allele; \/\/ no negative numbers allowed$/;"	t	class:Gene
 CC	Makefile	/^CC=g++$/;"	m
 DEBUGFLAGS	Makefile	/^DEBUGFLAGS= -O0 -g $(FLAGS)$/;"	m
 DEPS	Makefile	/^DEPS= genetic_drift.h$/;"	m
 ENDFLAGS	Makefile	/^ENDFLAGS= $/;"	m
 EXE	Makefile	/^EXE= WFM$/;"	m
 FLAGS	Makefile	/^FLAGS= -Wall -march=native -ftree-loop-im -pg -std=c++11#-fprofile-arcs -ftest-coverage #-funroll-loops $/;"	m
-GENETIC_DRIFT_INCLUDED	genetic_drift.h	2;"	d
-Gene	genetic_drift.h	/^	Gene() { allele_ = rand() % kNumAlleles; } \/\/ generate either 0 or 1$/;"	f	class:Gene
-Gene	genetic_drift.h	/^	Gene(Allele anAllele) { allele_ = anAllele % kNumAlleles; } \/\/ modulus guards against bad numbers$/;"	f	class:Gene
+GENETIC_DRIFT_INCLUDED	genetic_drift.h	21;"	d
+Gene	genetic_drift.h	/^		Gene ( const Allele &other )  : m_allele( other % kNumAlleles) {}; \/\/ kindof copy constructor$/;"	f	class:Gene
+Gene	genetic_drift.h	/^		Gene ( const Gene &other ) : m_allele(other.m_allele) {};   \/* copy constructor *\/$/;"	f	class:Gene
+Gene	genetic_drift.h	/^		Gene () : m_allele(rand() % kNumAlleles) {};    \/* constructor      *\/$/;"	f	class:Gene
 Gene	genetic_drift.h	/^class Gene$/;"	c
-GeneRatio	genetic_drift.cpp	/^GeneRatio (Population const &pop)$/;"	f
-KillGene	genetic_drift.cpp	/^KillGene ( Population &pop)$/;"	f
+GeneVec	genetic_drift.h	/^		typedef std::vector < Gene > GeneVec;$/;"	t
 OBJS	Makefile	/^OBJS=main.o genetic_drift.o$/;"	m
-Population	genetic_drift.h	/^typedef std::vector < Gene > Population;$/;"	t
+Population	genetic_drift.cpp	/^Population::Population ( const Population &other )$/;"	f	class:Population
+Population	genetic_drift.cpp	/^Population::Population ( const unsigned kInitialNum, const unsigned kMaxTimestep,$/;"	f	class:Population
+Population	genetic_drift.h	/^class Population$/;"	c
 RUNFLAGS	Makefile	/^RUNFLAGS= -O3 $(FLAGS)$/;"	m
-ReplicateGene	genetic_drift.cpp	/^ReplicateGene (Population &pop)$/;"	f
-allele	genetic_drift.h	/^	Allele allele(){return allele_; }$/;"	f	class:Gene
-allele_	genetic_drift.h	/^	Allele allele_;$/;"	m	class:Gene
+TwoVarFunc	genetic_drift.h	/^		typedef	std::vector < std::vector< unsigned > > TwoVarFunc;$/;"	t	class:Population
+allele	genetic_drift.h	/^		Allele allele() const{return m_allele; }$/;"	f	class:Gene
 debug	Makefile	/^debug=0$/;"	m
-kNumAlleles	genetic_drift.h	/^static const unsigned kNumAlleles = 2;$/;"	v
+gene_vec	genetic_drift.h	/^		GeneVec gene_vec() const {return m_gene_vec; }$/;"	f	class:Population
+kNumAlleles	genetic_drift.h	/^		static const unsigned kNumAlleles = 2;$/;"	m	class:Gene
+m_allele	genetic_drift.h	/^	Allele m_allele;$/;"	m	class:Gene
+m_gene_vec	genetic_drift.h	/^		GeneVec m_gene_vec;$/;"	m	class:Population
+m_probability_function	genetic_drift.h	/^		TwoVarFunc m_probability_function;$/;"	m	class:Population
 main	main.cpp	/^int main(int argc,char* argv[])$/;"	f
-operator !=	genetic_drift.h	/^friend bool operator != (const Gene &a, const Gene &b){ return (a.allele_ != b.allele_); };$/;"	f	class:Gene
+operator !=	genetic_drift.h	/^	friend bool operator != (const Gene &a, const Gene &b){ return (a.m_allele != b.m_allele); };$/;"	f	class:Gene
 operator <<	genetic_drift.cpp	/^operator << ( std::ostream &os, Gene &obj ) $/;"	f
-operator ==	genetic_drift.h	/^friend bool operator == (const Gene &a, const Gene &b){ return (a.allele_ == b.allele_); };$/;"	f	class:Gene
+operator =	genetic_drift.cpp	/^Gene::operator = ( const Gene &other )$/;"	f	class:Gene
+operator =	genetic_drift.cpp	/^Population::operator = ( const Population &other )$/;"	f	class:Population
+operator ==	genetic_drift.h	/^	friend bool operator == (const Gene &a, const Gene &b){ return (a.m_allele == b.m_allele); };$/;"	f	class:Gene
+probability_function	genetic_drift.h	/^		TwoVarFunc probability_function(){return m_probability_function; }$/;"	f	class:Population
+~Gene	genetic_drift.cpp	/^Gene::~Gene ()$/;"	f	class:Gene
+~Population	genetic_drift.cpp	/^Population::~Population ()$/;"	f	class:Population
