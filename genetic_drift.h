@@ -78,7 +78,7 @@ class Gene
 
 
 
-		typedef std::vector < Gene > GeneVec;
+typedef std::vector < Gene > GeneVec;
 
 /*
  * =====================================================================================
@@ -90,11 +90,12 @@ class Population
 {
 	public:
 	
-		typedef	std::vector < std::vector< unsigned > > TwoVarFunc;
+		typedef	std::vector < std::vector< double > > TwoVarFunc;
 
 		/* ====================  LIFECYCLE     ======================================= */
-		Population ( const unsigned kInitialNum, const unsigned kMaxTimesteps,  
-			std::function<void (GeneVec &) >PopEvolution);                             /* constructor      */
+		Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, 
+					const unsigned kMaxTimesteps,  
+					std::function<void (GeneVec &) >PopEvolution);                             /* constructor      */
 		
 		Population ( const Population &other );   /* copy constructor */
 		~Population ();                            /* destructor       */

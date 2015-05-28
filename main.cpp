@@ -14,9 +14,13 @@
 //TODO check consts
 //TODO names
 //TODO fitting
-//TODO parallelisation
-
-
+//TODO parallelisatio
+//TODO indentation
+//TODO start program with different parameters
+//TODO better OOP naming for PopEvolution
+//
+//
+//
 //HYPOTHESES:
 //1) discrete derivative
 //2) discrete > continuous model(omitted fitting)
@@ -25,40 +29,27 @@
 
 int main(int argc,char* argv[])
 {
-	static const unsigned kMaxTimestep = 10000, kInitialNum = 100, kMaxNum = 10000;
+	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10002, kMaxTimestep = 10000;// kInitialNumMin and kMaxTimestep should be around the same order of magnitude
 
-	for(unsigned num = kInitialNum; num < kMaxNum; ++num)
-	{
-		Population wright_fisher(num, kMaxTimestep, [](GeneVec& v)
-				{		
-					unsigned selected_gene = rand() % v.size();
-					v.push_back( v[selected_gene] );
-				}
-			);
+	std::cout << "program started" << std::endl;
+	Population wright_fisher(kInitialNumMin,kInitialNumMax,
+				 kMaxTimestep, [](GeneVec& v)
+			{		
+				unsigned selected_gene = rand() % v.size();
+				v.push_back( v[selected_gene] );
+			}
+		);
 
-		Population moran(num, kMaxTimestep, [](GeneVec& v)
-				{		
-					unsigned selected_gene = rand() % v.size();
-					v.push_back( v[selected_gene] );
-					v.erase( v.begin() + selected_gene ); //gene death
-				}
-			);
-	}
-		
-/* 
-//WF time evolution	
-	
-		std::cout << "The ratio of 0 in wright_fisher is: " << GeneRatio(wright_fisher) << std::endl;
-//Moran time evolution
-	for (unsigned timestep = 0; timestep < kMaxTimestep; ++timestep)
-	{
-		ReplicateGene(moran);
-		KillGene(moran);
-		GeneRatio(moran); // our datapoint
-	}	
+	Population moran(kInitialNumMin, kInitialNumMax,
+			 kMaxTimestep, [](GeneVec& v)
+			{		
+				unsigned selected_gene = rand() % v.size();
+				v.push_back( v[selected_gene] );
+				v.erase( v.begin() + selected_gene ); //gene death
+			}
+		);
 
-		std::cout << "The ratio of 0 in moran is: " << GeneRatio(moran) << std::endl;
-*/
+	std::cout << "program ended" << std::endl;
 	return 0;
 }
 
