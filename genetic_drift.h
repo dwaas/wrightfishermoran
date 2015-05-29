@@ -68,7 +68,7 @@ class Gene
 
 		/* ====================  FRIENDSHIP  ======================================= */
 
-	friend std::ostream & operator << ( std::ostream &os, Gene &obj );
+	friend std::ostream & operator << ( std::ostream &os, const Gene &obj );
 	friend bool operator == (const Gene &a, const Gene &b){ return (a.m_allele == b.m_allele); };
 	friend bool operator != (const Gene &a, const Gene &b){ return (a.m_allele != b.m_allele); };
 	

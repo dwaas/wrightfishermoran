@@ -26,8 +26,9 @@ Gene::~Gene ()
  *--------------------------------------------------------------------------------------
  */
 	std::ostream& 
-operator << ( std::ostream &os, Gene &obj ) 
+operator << ( std::ostream &os, const Gene &obj ) 
 {
+	std::cout << "I get called" << std::endl;
 	os << obj.allele() << std::endl;
 	return os;
 }		/* -----  end of function operator <<  ----- */
@@ -67,7 +68,7 @@ Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNu
 						std::function<void (GeneVec&)> PopEvolution)
 : m_gene_vec(kInitialNumMin)
 {
-	auto PrintVector = [](std::vector<double> & v)
+/* 	auto PrintVector = [](std::vector<double> & v)
 	{
 		if(v.size() == 0)
 		{ 
@@ -79,7 +80,7 @@ Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNu
 			std::cout<< itr << std::endl;
 		}
 	};
-
+*/
 
 	for(unsigned num = kInitialNumMin; num < kInitialNumMax; ++num)
 	{

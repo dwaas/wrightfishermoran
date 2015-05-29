@@ -7,7 +7,6 @@
 
 //TODO documentation
 //TODO cvim style formatting/ comments
-//TODO const in << operators
 //TODO random
 //TODO inline funcs
 //TODO check consts
@@ -49,7 +48,8 @@ int main(int argc,char* argv[])
 				v.erase( v.begin() + selected_gene ); //gene death
 			}
 		);
-
+	Gene a;
+	std::cout << "a = " << a << std::endl;
 	std::cout << "program ended" << std::endl;
 	return 0;
 }
