@@ -19,8 +19,8 @@ CC=g++
 ROOTLIBS= `root-config --libs`
 ROOTCFLAGS= `root-config --cflags`
 FLAGS+= -Wall -Wextra -pedantic -march=native -pg -std=c++11#-ftree-loop-im -fprofile-arcs -ftest-coverage #-funroll-loops 
-OBJS=main.o genetic_drift.o
-DEPS= genetic_drift.h
+OBJS=main.o Gene.o Population.o
+DEPS= Gene.h Population.h
 DEBUGFLAGS= -O0 -g $(FLAGS)
 RUNFLAGS= -O3 $(FLAGS)
 debug=0

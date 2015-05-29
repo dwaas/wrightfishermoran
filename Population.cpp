@@ -1,59 +1,22 @@
-#include "genetic_drift.h"
-
-
-
-
 /*
- *--------------------------------------------------------------------------------------
- *       Class:  Gene
- *      Method:  ~Gene
- * Description:  destructor
- *--------------------------------------------------------------------------------------
+ * =====================================================================================
+ *
+ *       Filename:  Population.cpp
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  05/29/2015 02:35:29 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Devin Waas (), dsc.waas@gmail.com
+ *   Organization:  
+ *
+ * =====================================================================================
  */
 
-Gene::~Gene ()
-{
-}  /* -----  end of method Gene::~Gene  (destructor)  ----- */
-
-
-
-
-/*
- *--------------------------------------------------------------------------------------
- *       Class:  Population
- *      Method:  operator <<
- * Description:  output stream operator
- *--------------------------------------------------------------------------------------
- */
-	std::ostream& 
-operator << ( std::ostream &os, const Gene &obj ) 
-{
-	std::cout << "I get called" << std::endl;
-	os << obj.allele() << std::endl;
-	return os;
-}		/* -----  end of function operator <<  ----- */
-
-/*
- *--------------------------------------------------------------------------------------
- *       Class:  Gene
- *      Method:  operator =
- * Description:  assignment operator
- *--------------------------------------------------------------------------------------
- */
-	Gene&
-Gene::operator = ( const Gene &other )
-{
-	if ( this != &other ) 
-	{
-		m_allele = other.m_allele;
-	}
-	return *this;
-}  /* -----  end of method Gene::operator =  (assignment operator)  ----- */
-
-
-
-
-
+#include "Population.h"
 
 /*
  *--------------------------------------------------------------------------------------
@@ -66,7 +29,7 @@ Gene::operator = ( const Gene &other )
 Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, 
 						const unsigned kMaxTimestep,
 						std::function<void (GeneVec&)> PopEvolution)
-: m_gene_vec(kInitialNumMin)
+: _gene_vec(kInitialNumMin)
 {
 /* 	auto PrintVector = [](std::vector<double> & v)
 	{
@@ -90,22 +53,22 @@ Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNu
 
 		for (unsigned timestep = 0; timestep < kMaxTimestep; ++timestep)
 		{
-			 PopEvolution(m_gene_vec);
-			 double ratio = std::count(m_gene_vec.begin(), m_gene_vec.end(), 0) / (double) m_gene_vec.size(); // 0 is the value of one allele
+			 PopEvolution(_gene_vec);
+			 double ratio = std::count(_gene_vec.begin(), _gene_vec.end(), 0) / (double) _gene_vec.size(); // 0 is the value of one allele
 			 std::cout  << " num = " << num << " t = " << timestep << " Gene ratio is: " << ratio << std::endl;
 
 			 t_row.push_back(ratio);
 
 		} 
 
-		m_probability_function.push_back(t_row);
+		_probability_function.push_back(t_row);
 	}
-	std::cout << m_gene_vec.size() << std::endl;
+	std::cout << _gene_vec.size() << std::endl;
  		
 
 	std::cout << "population was succesfully initialised." << std::endl;
 	/*
-	for(auto& row: m_probability_function)
+	for(auto& row: _probability_function)
 	{
 		for(auto& column: row)
 		{
@@ -126,8 +89,8 @@ Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNu
  */
 Population::Population ( const Population &other )
 {
-	m_gene_vec = other.m_gene_vec;
-	m_probability_function = other.m_probability_function;
+	_gene_vec = other._gene_vec;
+	_probability_function = other._probability_function;
 //check whether general function HAS assignment operator
 
 
@@ -156,8 +119,8 @@ Population::operator = ( const Population &other )
 {
 	if ( this != &other ) 
 	{
-		m_gene_vec = other.m_gene_vec;
-		m_probability_function = other.m_probability_function;
+		_gene_vec = other._gene_vec;
+		_probability_function = other._probability_function;
 	}
 	return *this;
 }  /* -----  end of method Population::operator =  (assignment operator)  ----- */

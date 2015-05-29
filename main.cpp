@@ -1,8 +1,9 @@
+#include "Gene.h"
+#include "Population.h"
+
 #include <time.h> //time()
-#include <random>
-
-
-#include "genetic_drift.h"
+//root
+#include "TCanvas.h"
 
 
 //TODO documentation
@@ -10,13 +11,14 @@
 //TODO random
 //TODO inline funcs
 //TODO check consts
-//TODO names
 //TODO fitting
 //TODO parallelisatio
 //TODO indentation
 //TODO start program with different parameters
-//TODO better OOP naming for PopEvolution
-//
+//TODO plot functions
+//TODO derivation
+//TODO FPE function
+//TODO files in different folders
 //
 //
 //HYPOTHESES:
@@ -27,7 +29,9 @@
 
 int main(int argc,char* argv[])
 {
-	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10002, kMaxTimestep = 10000;// kInitialNumMin and kMaxTimestep should be around the same order of magnitude
+	// kInitialNumMin and kMaxTimestep should be around the same order of magnitude
+	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10002, 
+				 			kMaxTimestep = 10000;
 
 	std::cout << "program started" << std::endl;
 /*  	Population wright_fisher(kInitialNumMin,kInitialNumMax,
@@ -48,9 +52,10 @@ int main(int argc,char* argv[])
 				v.erase( v.begin() + selected_gene ); //gene death
 			}
 		);
-	Gene a;
-	std::cout << "a = " << a << std::endl;
-	std::cout << "program ended" << std::endl;
+//	Gene a;
+//	std::cout << "a = " << a << std::endl;
+//	std::cout << "program ended" << std::endl;
+	
 	return 0;
 }
 
