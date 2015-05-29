@@ -67,16 +67,31 @@ Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNu
 						std::function<void (GeneVec&)> PopEvolution)
 : m_gene_vec(kInitialNumMin)
 {
+	auto PrintVector = [](std::vector<double> & v)
+	{
+		if(v.size() == 0)
+		{ 
+			std::cout << " empty vector" << std::endl;
+			return;
+		}
+		for(auto & itr : v)
+		{
+			std::cout<< itr << std::endl;
+		}
+	};
+
 
 	for(unsigned num = kInitialNumMin; num < kInitialNumMax; ++num)
 	{
-		std::vector< double > t_row; // row with a fixed num
+		std::vector< double > t_row; // row with a given a fixed num
+//		std::cout << "t_row is:" << std::endl;
+//		PrintVector(t_row);
 
 		for (unsigned timestep = 0; timestep < kMaxTimestep; ++timestep)
 		{
 			 PopEvolution(m_gene_vec);
 			 double ratio = std::count(m_gene_vec.begin(), m_gene_vec.end(), 0) / (double) m_gene_vec.size(); // 0 is the value of one allele
-//			 std::cout  << " num = " << num << " t = " << timestep << " Gene ratio is: " << ratio << std::endl;
+			 std::cout  << " num = " << num << " t = " << timestep << " Gene ratio is: " << ratio << std::endl;
 
 			 t_row.push_back(ratio);
 
@@ -88,7 +103,7 @@ Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNu
  		
 
 	std::cout << "population was succesfully initialised." << std::endl;
-	
+	/*
 	for(auto& row: m_probability_function)
 	{
 		for(auto& column: row)
@@ -97,6 +112,8 @@ Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNu
 		}
 		std::cout << std::endl;
 	}
+
+	*/
 }  /* -----  end of method Population::Population  (constructor)  ----- */
 
 /*

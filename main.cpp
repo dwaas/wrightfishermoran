@@ -9,7 +9,6 @@
 //TODO cvim style formatting/ comments
 //TODO const in << operators
 //TODO random
-//TODO encapsulate print vector functions
 //TODO inline funcs
 //TODO check consts
 //TODO names
@@ -32,19 +31,21 @@ int main(int argc,char* argv[])
 	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10002, kMaxTimestep = 10000;// kInitialNumMin and kMaxTimestep should be around the same order of magnitude
 
 	std::cout << "program started" << std::endl;
-	Population wright_fisher(kInitialNumMin,kInitialNumMax,
+/*  	Population wright_fisher(kInitialNumMin,kInitialNumMax,
 				 kMaxTimestep, [](GeneVec& v)
 			{		
 				unsigned selected_gene = rand() % v.size();
 				v.push_back( v[selected_gene] );
 			}
 		);
-
+*/
 	Population moran(kInitialNumMin, kInitialNumMax,
 			 kMaxTimestep, [](GeneVec& v)
 			{		
 				unsigned selected_gene = rand() % v.size();
 				v.push_back( v[selected_gene] );
+
+				selected_gene = rand() % v.size(); // select another random gene
 				v.erase( v.begin() + selected_gene ); //gene death
 			}
 		);
