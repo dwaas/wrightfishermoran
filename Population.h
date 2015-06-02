@@ -1,6 +1,5 @@
 /*
  * =====================================================================================
- *
  *       Filename:  Population.h
  *
  *    Description:  
@@ -54,7 +53,7 @@ class Population
 
 		/* ====================  ACCESSORS     ======================================= */
 		GeneVec gene_vec() const {return _gene_vec; }
-		TwoVarFunc probability_function(){return _probability_function; }
+		double probability_function(unsigned n, unsigned t) const {return _probability_function[n][t]; }
 		/* ====================  MUTATORS      ======================================= */
 		//no need to manually change neither gene_vec nor probability_function
 

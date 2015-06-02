@@ -25,60 +25,31 @@
  * Description:  constructor
  *--------------------------------------------------------------------------------------
  */
-// temporarily only WF
 Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, 
 						const unsigned kMaxTimestep,
-						std::function<void (GeneVec&)> PopEvolution)
-: _gene_vec(kInitialNumMin)
-{
-/* 	auto PrintVector = [](std::vector<double> & v)
-	{
-		if(v.size() == 0)
-		{ 
-			std::cout << " empty vector" << std::endl;
-			return;
-		}
-		for(auto & itr : v)
-		{
-			std::cout<< itr << std::endl;
-		}
-	};
-*/
+						std::function<void (GeneVec&)> PopEvolution):
+_gene_vec(kInitialNumMin),
+_probability_function( (kInitialNumMax - kInitialNumMin), std::vector<double> (kMaxTimestep) )
 
+{
+//FIXME: processes need absolute n number, matrices need relative ones 
 	for(unsigned num = kInitialNumMin; num < kInitialNumMax; ++num)
 	{
-		std::vector< double > t_row; // row with a given a fixed num
-//		std::cout << "t_row is:" << std::endl;
-//		PrintVector(t_row);
-
 		for (unsigned timestep = 0; timestep < kMaxTimestep; ++timestep)
 		{
 			 PopEvolution(_gene_vec);
-			 double ratio = std::count(_gene_vec.begin(), _gene_vec.end(), 0) / (double) _gene_vec.size(); // 0 is the value of one allele
-			 std::cout  << " num = " << num << " t = " << timestep << " Gene ratio is: " << ratio << std::endl;
+			
+			 double ratio = std::count(_gene_vec.begin(), _gene_vec.end(), 0) / (double) _gene_vec.size(); // 0 is the value of one allele			 
+			 _probability_function[num - kInitialNumMin][timestep] = ratio;
 
-			 t_row.push_back(ratio);
-
+//			 std::cout  << " num = " << num << " t = " << timestep << " Gene ratio is: " << ratio << std::endl;
+//			 std::cout  << " num = " << num << " t = " << timestep << " F probabil is: " << probability_function((num - kInitialNumMin), timestep) << std::endl;
 		} 
-
-		_probability_function.push_back(t_row);
 	}
-	std::cout << _gene_vec.size() << std::endl;
- 		
-
+	std::cout << _gene_vec.size() << std::endl; 
 	std::cout << "population was succesfully initialised." << std::endl;
-	/*
-	for(auto& row: _probability_function)
-	{
-		for(auto& column: row)
-		{
-			std::cout << column << "\t" ;
-		}
-		std::cout << std::endl;
-	}
-
-	*/
 }  /* -----  end of method Population::Population  (constructor)  ----- */
+
 
 /*
  *--------------------------------------------------------------------------------------
@@ -126,6 +97,41 @@ Population::operator = ( const Population &other )
 }  /* -----  end of method Population::operator =  (assignment operator)  ----- */
 
 
+
+/* DEBUGGING SNIPPETS
+ 
+
+
+
+//RANGE PRINT MATRIX 	
+	for(auto& row: _probability_function)
+	{
+		for(auto& column: row)
+		{
+			std::cout << column << "\t" ;
+		}
+		std::cout << std::endl;
+	}
+
+//LAMBDA PRINTVECTOR
+//
+//
+//
+ 	auto PrintVector = [](std::vector<double> & v)
+	{
+		if(v.size() == 0)
+		{ 
+			std::cout << " empty vector" << std::endl;
+			return;
+		}
+		for(auto & itr : v)
+		{
+			std::cout<< itr << std::endl;
+		}
+	};
+
+
+ */
 
 
 
