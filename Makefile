@@ -20,7 +20,7 @@ ROOTLIBS= `root-config --libs`
 ROOTCFLAGS= `root-config --cflags`
 FLAGS+= -Wall -Wextra -pedantic -march=native -pg -std=c++11#-ftree-loop-im -fprofile-arcs -ftest-coverage #-funroll-loops 
 OBJS=main.o Gene.o Population.o
-DEPS= Gene.h Population.h
+DEPS= Gene.h Population.h DiscreteDerivative.hpp
 DEBUGFLAGS= -O0 -g $(FLAGS)
 RUNFLAGS= -O3 $(FLAGS)
 debug=0
@@ -43,6 +43,11 @@ $(EXE): $(OBJS)
 
 %.o:  %.cpp $(DEPS) 
 	$(CC) -c -o $@ $< $(RUNFLAGS) $(ROOTCFLAGS)
+
+run: $(EXE)
+	./$(EXE) $(ARGS)
+
+
 endif
 
 #all:
