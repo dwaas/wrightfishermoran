@@ -34,10 +34,10 @@
 class DiscreteDerivative
 {
 	public:
-		typedef std::function< int (int arg) > functor_type;
+		typedef std::function< double (int arg) > functor_type;
 
 		// ====================  LIFECYCLE     =======================================
-		DiscreteDerivative (functor_type  f, int arg_min, int arg_max) : 
+		DiscreteDerivative (functor_type f, int arg_min, int arg_max) : 
 		_f(f), _arg_min(arg_min), _arg_max(arg_max) {};               /* constructor      */
 	//FIXME Assumes that arg_min<arg_max	
 		DiscreteDerivative ( const DiscreteDerivative &other ) :

@@ -2,9 +2,10 @@
 #include "Gene.h"
 #include "Population.h"
 
-#include <functional> //std::bind, std::placeholders::_1
-#include <memory> // std::unique_ptr()
-#include <time.h> //time()
+#include <limits> 			//std::numeric_limits
+#include <iomanip>			//std::setprecision
+#include <memory> 			//std::unique_ptr()
+#include <time.h> 			//time()
 
 
 //root
@@ -20,13 +21,9 @@
 //TODO documentation
 //TODO random
 //TODO inline funcs
-//TODO check consts
 //TODO fitting
 //TODO parallelisation
-//TODO indentation
 //TODO start program with different parameters
-//TODO plot functions
-//TODO derivation
 //TODO FPE function
 //TODO files in different folders
 //TODO use polymorphism for wright_fisher and moran
@@ -42,14 +39,17 @@
 
 int main(int argc,char* argv[])
 {
-	using namespace std::placeholders;
+	typedef std::numeric_limits< double > double_limit;
+	std::cout.precision(double_limit::digits10);
 
 	// kInitialNumMin and kMaxTimestep should be around the same order of magnitude
+	//
 	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10002, 
-				 			kInitialTimestep = 0, kMaxTimestep = 10000;
+				 			kMinTimestep = 0, kMaxTimestep = 10000;
 
 	std::cout << "program started" << std::endl;
-  
+//initialise populations  
+//
 	Population wright_fisher(kInitialNumMin, kInitialNumMax,
 				 kMaxTimestep, [](GeneVec& v)
 			{		
@@ -70,11 +70,8 @@ int main(int argc,char* argv[])
 		);
 */
 
-
-//	Gene a;
-//	std::cout << "a = " << a << std::endl;
+//==========================================================FOKKER PLANCK TEST
 	
-	static const unsigned kDeltaNum = kInitialNumMax - kInitialNumMin;
 //
 //	auto testF = [](int arg)
 //	{	
@@ -84,32 +81,50 @@ int main(int argc,char* argv[])
 //	};
 //
 
-	int n = kInitialNumMax - kInitialNumMin - 1, t = 0;
-	//TODO shorter way to write this
+	unsigned n = kInitialNumMax - kInitialNumMin - 1, t = 1000;
 	
 
-	//auto WFTimeFunction = std::bind([&wright_fisher](int n, int t)
-	//								{
-	//									return wright_fisher.probability_function(n, t);
-	//								}, kInitialNumMin, _1);
-	auto WFTimeFunction = [&wright_fisher, n] (int t)
-							{ 
-								return wright_fisher.probability_function(n, t); 
+	auto WFTimeFunction = [&wright_fisher, n] (unsigned t)
+							{
+								return wright_fisher.probability_function(n, t); //FIXME no domain guard 
 							};
 
 	std::cout << WFTimeFunction(t) << std::endl;
 
-	DiscreteDerivative d_WF_dt(WFTimeFunction, kInitialTimestep, kMaxTimestep);
+	DiscreteDerivative d_WF_dt(WFTimeFunction, kMinTimestep, kMaxTimestep);
 
 	std::cout << "DiscreteDerivative constructed with arg_min = " << d_WF_dt.arg_min();
 	std::cout << " and arg_max =  " << d_WF_dt.arg_max() << std::endl;
 
-	std::cout << "WF     in " <<  t-1 << "  = " << WFTimeFunction(t-1) << std::endl;
-	std::cout << "WF     in " <<  t << "  = " << WFTimeFunction(t) << std::endl;
-	std::cout << "WF     in " <<  t+1 << "  = " << WFTimeFunction(t+1) << std::endl;
-	std::cout << "discr der in " << t << "  = " << d_WF_dt(t) << std::endl;
+//	std::cout << "WF     in " <<  t-1 << "  = " << std::fixed << WFTimeFunction(t-1) << std::endl;
+//	std::cout << "WF     in " <<  t << "  = "   << std::fixed << WFTimeFunction(t) << std::endl;
+//	std::cout << "WF     in " <<  t+1 << "  = " << std::fixed << WFTimeFunction(t+1) << std::endl;
+	std::cout << "discr der in t = " << t << "  = " << std::fixed << d_WF_dt(t) << std::endl;
 
+	std::cout << "manual dew in " << t << "  = " << std::fixed 
+				<< (WFTimeFunction(t+1)- WFTimeFunction(t-1))/2.0 << std::endl;
+	
+	
+	//TODO test from here
+	auto WFNumFunction = [&wright_fisher, t] (unsigned n)
+						{
+							return wright_fisher.probability_function(n, t); 
+						};
+	DiscreteDerivative d_WF_dn(WFNumFunction, kInitialNumMin, kInitialNumMax);
+
+	auto d_WF_dnFunc = [&d_WF_dn] (unsigned n)
+					{
+						return d_WF_dn(n);
+					};
+	
+	DiscreteDerivative d2_WF_dn2(d_WF_dnFunc, kInitialNumMin, kInitialNumMax);
+
+	std::cout << "discr der in n = " << n << "  = " << std::fixed << d2_WF_dn2(n) << std::endl;
+
+//=========================================================GRAPHICS
 /*
+	static const unsigned kDeltaNum = kInitialNumMax - kInitialNumMin;
+
 	std::unique_ptr<TApplication> app( new TApplication("App", &argc, argv));
 
 //	std::unique_ptr<TAxis3D> axes( new TAxis3D);
