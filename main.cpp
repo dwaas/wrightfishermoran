@@ -2,7 +2,7 @@
 #include "Gene.h"
 #include "Population.h"
 
-
+#include <functional> //std::bind, std::placeholders::_1
 #include <memory> // std::unique_ptr()
 #include <time.h> //time()
 
@@ -18,7 +18,6 @@
 
 //TODO order headers alphabetically
 //TODO documentation
-//TODO cvim style formatting/ comments
 //TODO random
 //TODO inline funcs
 //TODO check consts
@@ -32,6 +31,7 @@
 //TODO files in different folders
 //TODO use polymorphism for wright_fisher and moran
 //TODO use gnuplot instead of rootjunk
+//TODO template DiscreteDerivative
 
 //
 //HYPOTHESES:
@@ -42,19 +42,22 @@
 
 int main(int argc,char* argv[])
 {
+	using namespace std::placeholders;
+
 	// kInitialNumMin and kMaxTimestep should be around the same order of magnitude
 	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10002, 
-				 			kMaxTimestep = 10000;
+				 			kInitialTimestep = 0, kMaxTimestep = 10000;
 
 	std::cout << "program started" << std::endl;
-  	Population wright_fisher(kInitialNumMin, kInitialNumMax,
+  
+	Population wright_fisher(kInitialNumMin, kInitialNumMax,
 				 kMaxTimestep, [](GeneVec& v)
 			{		
 				unsigned selected_gene = rand() % v.size();
 				v.push_back( v[selected_gene] );
 			}
 		);
-
+/*  
 	Population moran(kInitialNumMin, kInitialNumMax,
 			 kMaxTimestep, [](GeneVec& v)
 			{		
@@ -65,15 +68,46 @@ int main(int argc,char* argv[])
 				v.erase( v.begin() + selected_gene ); //gene death
 			}
 		);
+*/
+
+
 //	Gene a;
 //	std::cout << "a = " << a << std::endl;
 	
 	static const unsigned kDeltaNum = kInitialNumMax - kInitialNumMin;
+//
+//	auto testF = [](int arg)
+//	{	
+//		if(arg < 5){ return 2*arg;}
+//		if(arg == 5){return 30;}
+//		if(arg > 5){return (-4)*arg;}
+//	};
+//
 
-	auto testF = [](int arg){return 2*arg;};
+	int n = kInitialNumMax - kInitialNumMin - 1, t = 0;
+	//TODO shorter way to write this
 	
-	DiscreteDerivative df(testF, 0, 10);
-	std::cout << "discr der in 1  = " << testF(1) << std::endl;
+
+	//auto WFTimeFunction = std::bind([&wright_fisher](int n, int t)
+	//								{
+	//									return wright_fisher.probability_function(n, t);
+	//								}, kInitialNumMin, _1);
+	auto WFTimeFunction = [&wright_fisher, n] (int t)
+							{ 
+								return wright_fisher.probability_function(n, t); 
+							};
+
+	std::cout << WFTimeFunction(t) << std::endl;
+
+	DiscreteDerivative d_WF_dt(WFTimeFunction, kInitialTimestep, kMaxTimestep);
+
+	std::cout << "DiscreteDerivative constructed with arg_min = " << d_WF_dt.arg_min();
+	std::cout << " and arg_max =  " << d_WF_dt.arg_max() << std::endl;
+
+	std::cout << "WF     in " <<  t-1 << "  = " << WFTimeFunction(t-1) << std::endl;
+	std::cout << "WF     in " <<  t << "  = " << WFTimeFunction(t) << std::endl;
+	std::cout << "WF     in " <<  t+1 << "  = " << WFTimeFunction(t+1) << std::endl;
+	std::cout << "discr der in " << t << "  = " << d_WF_dt(t) << std::endl;
 
 /*
 	std::unique_ptr<TApplication> app( new TApplication("App", &argc, argv));

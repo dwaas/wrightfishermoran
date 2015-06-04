@@ -53,7 +53,7 @@ class Population
 
 		/* ====================  ACCESSORS     ======================================= */
 		GeneVec gene_vec() const {return _gene_vec; }
-		double probability_function(unsigned n, unsigned t) const {return _probability_function[n][t]; }
+		double probability_function (unsigned n, unsigned t) const {return _probability_function[n][t]; }
 		/* ====================  MUTATORS      ======================================= */
 		//no need to manually change neither gene_vec nor probability_function
 
