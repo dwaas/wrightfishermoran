@@ -37,13 +37,13 @@ class DiscreteDerivative
 		typedef std::function< int (int arg) > functor_type;
 
 		// ====================  LIFECYCLE     =======================================
-		DiscreteDerivative (functor_type  &f, int &arg_min, int &arg_max) : 
+		DiscreteDerivative (functor_type  f, int arg_min, int arg_max) : 
 		_f(f), _arg_min(arg_min), _arg_max(arg_max) {};               /* constructor      */
 		
 		DiscreteDerivative ( const DiscreteDerivative &other ) :
 		_f(other._f), _arg_min(other._arg_min), _arg_max(other._arg_max) {}; /* copy constructor */
 		
-		~DiscreteDerivative ();                          /* destructor       */
+		~DiscreteDerivative (){};                          /* destructor       */
 
 		/* ====================  ACCESSORS     ======================================= */
 		functor_type f() const { return _f;}
@@ -53,7 +53,7 @@ class DiscreteDerivative
 		/* ====================  MUTATORS      ======================================= */
 
 		/* ====================  OPERATORS     ======================================= */
-		int operator ()(int &arg);
+		int operator ()(int arg);
 
 	protected:
 	
@@ -73,7 +73,7 @@ class DiscreteDerivative
  * Description:  derivation operator
  *--------------------------------------------------------------------------------------
  */
-int DiscreteDerivative::operator ()(int &arg)
+int DiscreteDerivative::operator ()(int arg)
 {
 	if(arg != _arg_min && arg != _arg_max)// centered derivative
 	{
