@@ -26,16 +26,19 @@
  *--------------------------------------------------------------------------------------
  */
 Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, 
-						const unsigned kMaxTimestep,
-						std::function<void (GeneVec&)> PopEvolution):
+						const unsigned kMaxTimesteps,
+						std::function<void (GeneVec&)> PopEvolution) :
+
 _gene_vec(kInitialNumMin),
-_probability_function( (kInitialNumMax - kInitialNumMin), std::vector<double> (kMaxTimestep) )
+_probability_function( (kInitialNumMax - kInitialNumMin), std::vector<double> (kMaxTimesteps) ), 
+_kInitialNumMin(kInitialNumMin), _kInitialNumMax(kInitialNumMax), 
+_kMaxTimesteps(kMaxTimesteps)
 
 {
 //FIXME: processes need absolute n number, matrices need relative ones 
-	for(unsigned num = kInitialNumMin; num < kInitialNumMax; ++num)
+	for(unsigned num = _kInitialNumMin; num < _kInitialNumMax; ++num)
 	{
-		for (unsigned timestep = 0; timestep < kMaxTimestep; ++timestep)
+		for (unsigned timestep = 0; timestep < _kMaxTimesteps; ++timestep)
 		{
 			 PopEvolution(_gene_vec);
 			
@@ -96,7 +99,33 @@ Population::operator = ( const Population &other )
 	return *this;
 }  /* -----  end of method Population::operator =  (assignment operator)  ----- */
 
+/*
+ *--------------------------------------------------------------------------------------
+ *       Class:  Population
+ *      Method:  probability_function()
+ * Description:  _probability_function getter
+ *--------------------------------------------------------------------------------------
+ */
 
+	double
+Population::probability_function(unsigned num, unsigned timestep) const
+{
+	if(num < _kInitialNumMin || num > _kInitialNumMax)
+	{	
+		std::cout << "num = " << num << " is not included in the domain;"; 
+		std::cout << " select a valid value." << std::endl;	
+		
+		return 0;
+	}
+	if(timestep > _kMaxTimesteps)
+	{	
+		std::cout << "timestep = " << timestep << " is not included in the domain;"; 
+		std::cout << " select a valid value." << std::endl;	
+		
+		return 0;
+	}
+	return _probability_function[(num - _kInitialNumMin)][timestep ]; 
+}
 
 /* DEBUGGING SNIPPETS
  

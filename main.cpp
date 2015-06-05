@@ -28,7 +28,6 @@
 //TODO files in different folders
 //TODO use polymorphism for wright_fisher and moran
 //TODO use gnuplot instead of rootjunk
-//TODO template DiscreteDerivative
 
 //
 //HYPOTHESES:
@@ -42,16 +41,16 @@ int main(int argc,char* argv[])
 	typedef std::numeric_limits< double > double_limit;
 	std::cout.precision(double_limit::digits10);
 
-	// kInitialNumMin and kMaxTimestep should be around the same order of magnitude
+	// kInitialNumMin and kMaxTimesteps should be around the same order of magnitude
 	//
-	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10002, 
-				 			kMinTimestep = 0, kMaxTimestep = 10000;
+	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10020, 
+				 			kMinTimesteps = 0, kMaxTimesteps = 100;
 
 	std::cout << "program started" << std::endl;
 //initialise populations  
 //
 	Population wright_fisher(kInitialNumMin, kInitialNumMax,
-				 kMaxTimestep, [](GeneVec& v)
+				 kMaxTimesteps, [](GeneVec& v)
 			{		
 				unsigned selected_gene = rand() % v.size();
 				v.push_back( v[selected_gene] );
@@ -59,7 +58,7 @@ int main(int argc,char* argv[])
 		);
 /*  
 	Population moran(kInitialNumMin, kInitialNumMax,
-			 kMaxTimestep, [](GeneVec& v)
+			 kMaxTimesteps, [](GeneVec& v)
 			{		
 				unsigned selected_gene = rand() % v.size();
 				v.push_back( v[selected_gene] );
@@ -81,18 +80,21 @@ int main(int argc,char* argv[])
 //	};
 //
 
-	unsigned n = kInitialNumMax - kInitialNumMin - 1, t = 1000;
+	static const unsigned kDeltaNum = kInitialNumMax - kInitialNumMin;
+	
+	unsigned n = kInitialNumMin, t = 10; // t = kInitialNumMax segfaults //FIXME
 	
 
 	auto WFTimeFunction = [&wright_fisher, n] (unsigned t)
 							{
-								return wright_fisher.probability_function(n, t); //FIXME no domain guard 
+								return wright_fisher.probability_function(n, t);  
 							};
 
 	std::cout << WFTimeFunction(t) << std::endl;
 
-	DiscreteDerivative d_WF_dt(WFTimeFunction, kMinTimestep, kMaxTimestep);
+	DiscreteDerivative d_WF_dt(WFTimeFunction, kMinTimesteps, kMaxTimesteps);
 
+	std::cout << " TIME  " << std::endl;
 	std::cout << "DiscreteDerivative constructed with arg_min = " << d_WF_dt.arg_min();
 	std::cout << " and arg_max =  " << d_WF_dt.arg_max() << std::endl;
 
@@ -101,29 +103,43 @@ int main(int argc,char* argv[])
 //	std::cout << "WF     in " <<  t+1 << "  = " << std::fixed << WFTimeFunction(t+1) << std::endl;
 	std::cout << "discr der in t = " << t << "  = " << std::fixed << d_WF_dt(t) << std::endl;
 
-	std::cout << "manual dew in " << t << "  = " << std::fixed 
-				<< (WFTimeFunction(t+1)- WFTimeFunction(t-1))/2.0 << std::endl;
+//	std::cout << "manual dew in " << t << "  = " << std::fixed 
+//				<< (WFTimeFunction(t+1)- WFTimeFunction(t-1))/2.0 << std::endl;
 	
 	
-	//TODO test from here
 	auto WFNumFunction = [&wright_fisher, t] (unsigned n)
 						{
 							return wright_fisher.probability_function(n, t); 
 						};
 	DiscreteDerivative d_WF_dn(WFNumFunction, kInitialNumMin, kInitialNumMax);
 
-	auto d_WF_dnFunc = [&d_WF_dn] (unsigned n)
+	std::cout << " NUM  " << std::endl;
+	std::cout << "DiscreteDerivative constructed with arg_min = " << d_WF_dn.arg_min();
+	std::cout << " and arg_max =  " << d_WF_dn.arg_max() << std::endl;
+
+	std::cout << "discr der1 in n = " << n << "  = " << std::fixed << d_WF_dn(n) << std::endl;
+//
+//	std::cout << "manual der1 in n = " << n << "  = " << std::fixed 
+//				<< (WFNumFunction(n+1)- WFNumFunction(n-1))/2.0 << std::endl;
+
+//2nd derivative in num
+	auto d_WF_dnFunc = [&d_WF_dn] (unsigned n) //delegate function aka wrapper
 					{
 						return d_WF_dn(n);
 					};
 	
 	DiscreteDerivative d2_WF_dn2(d_WF_dnFunc, kInitialNumMin, kInitialNumMax);
 
-	std::cout << "discr der in n = " << n << "  = " << std::fixed << d2_WF_dn2(n) << std::endl;
+	std::cout << "discr der2 in n = " << n << "  = " << std::fixed << d2_WF_dn2(n) << std::endl;
+
+//	std::cout << "manual der2 in n = " << n << "  = " << std::fixed 
+//				<< (d_WF_dnFunc(n+1)- d_WF_dnFunc(n-1))/2.0 << std::endl;
+
+//TODO FPE routine
+
 
 //=========================================================GRAPHICS
 /*
-	static const unsigned kDeltaNum = kInitialNumMax - kInitialNumMin;
 
 	std::unique_ptr<TApplication> app( new TApplication("App", &argc, argv));
 
@@ -138,17 +154,17 @@ int main(int argc,char* argv[])
 													200,10,700,900));
 	canvas -> Divide(2,1,0,0);
 
-	std::unique_ptr<TGraph2D> wright_fisher_graph( new TGraph2D(kDeltaNum*kMaxTimestep));
+	std::unique_ptr<TGraph2D> wright_fisher_graph( new TGraph2D(kDeltaNum*kMaxTimesteps));
 	wright_fisher_graph-> SetName("WF");
 	
-	std::unique_ptr<TGraph2D> moran_graph( new TGraph2D(kDeltaNum*kMaxTimestep));
+	std::unique_ptr<TGraph2D> moran_graph( new TGraph2D(kDeltaNum*kMaxTimesteps));
 	moran_graph-> SetName("M");
 
 	unsigned point_num = 0;
 	//Fill TGraph2D
 	for (unsigned n = 0; n < kDeltaNum; ++n)
 	{
-		for (unsigned t = 0; t < kMaxTimestep; ++t)
+		for (unsigned t = kMinTimesteps; t < kMaxTimesteps; ++t)
 		{
 			wright_fisher_graph->SetPoint(point_num, n, t, moran.probability_function(n,t));
 			moran_graph->SetPoint(point_num, n, t, moran.probability_function(n,t));
@@ -157,7 +173,7 @@ int main(int argc,char* argv[])
 		std::cout << "set all t for n =  " << n << std::endl;
 	}
 	std::cout << "point num = " << ++point_num << std::endl;
-	std::cout << "point num product = " << kDeltaNum * kMaxTimestep << std::endl;
+	std::cout << "point num product = " << kDeltaNum * kMaxTimesteps << std::endl;
 
 	//FIXME point_num is 1 more than the product
 
@@ -170,7 +186,7 @@ int main(int argc,char* argv[])
 	wright_fisher_graph->GetXaxis() -> SetRangeUser(kInitialNumMin, kInitialNumMax);
 
 	wright_fisher_graph->GetYaxis() -> SetTitle("timesteps");
-	wright_fisher_graph->GetYaxis() -> SetRangeUser(0, kMaxTimestep);
+	wright_fisher_graph->GetYaxis() -> SetRangeUser(kMinTimesteps, kMaxTimesteps);
 
 	wright_fisher_graph->GetZaxis() -> SetTitle("gene0/ total Genes");
 	wright_fisher_graph->GetZaxis() -> SetRangeUser(0.0, 1.0);
@@ -188,7 +204,7 @@ int main(int argc,char* argv[])
 	moran_graph->GetXaxis() -> SetRangeUser(kInitialNumMin, kInitialNumMax);
 
 	moran_graph->GetYaxis() -> SetTitle("timesteps");
-	moran_graph->GetYaxis() -> SetRangeUser(0, kMaxTimestep);
+	moran_graph->GetYaxis() -> SetRangeUser(kMinTimesteps, kMaxTimesteps);
 
 	moran_graph->GetZaxis() -> SetTitle("gene0/ total Genes");
 	moran_graph->GetZaxis() -> SetRangeUser(0.0, 1.0);

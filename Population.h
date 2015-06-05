@@ -46,14 +46,18 @@ class Population
 		/* ====================  LIFECYCLE     ======================================= */
 		Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, 
 					const unsigned kMaxTimesteps,  
-					std::function<void (GeneVec &) >PopEvolution);                             /* constructor      */
+					std::function<void (GeneVec &) > PopEvolution);                             /* constructor      */
 		
 		Population ( const Population &other );   /* copy constructor */
 		~Population ();                            /* destructor       */
 
 		/* ====================  ACCESSORS     ======================================= */
 		GeneVec gene_vec() const {return _gene_vec; }
-		double probability_function (unsigned n, unsigned t) const {return _probability_function[n][t]; }
+		double probability_function (unsigned num, unsigned timestep) const; 
+		unsigned kInitialNumMin () const {return _kInitialNumMin;}
+		unsigned kInitialNumMax () const {return _kInitialNumMax;}
+		unsigned kMaxTimesteps  () const {return _kMaxTimesteps;}
+
 		/* ====================  MUTATORS      ======================================= */
 		//no need to manually change neither gene_vec nor probability_function
 
@@ -69,6 +73,9 @@ class Population
 		
 		GeneVec _gene_vec;
 		TwoVarFunc _probability_function;
+		unsigned _kInitialNumMin;
+		unsigned _kInitialNumMax;
+		unsigned _kMaxTimesteps; 
 
 }; /* -----  end of class Population  ----- */
 
