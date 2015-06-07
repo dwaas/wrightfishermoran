@@ -2,6 +2,7 @@
 #include "Gene.h"
 #include "Population.h"
 
+#include <fstream>			//std::ofstream
 #include <limits> 			//std::numeric_limits
 #include <iomanip>			//std::setprecision
 #include <memory> 			//std::unique_ptr()
@@ -62,7 +63,7 @@ int main(int argc,char* argv[])
 				v.push_back( v[selected_gene] );
 			}
 		);
-/*  
+  
 	Population moran(kInitialNumMin, kInitialNumMax,
 			 kMaxTimesteps, [](GeneVec& v)
 			{		
@@ -73,19 +74,50 @@ int main(int argc,char* argv[])
 				v.erase( v.begin() + selected_gene ); //gene death
 			}
 		);
-*/
+
+
+//==========================================================PRINT TO FILE
+auto wright_fisherFunction = [&wright_fisher](unsigned n, unsigned t)
+			{ 
+				return wright_fisher.probability_function(n,t);
+			};
+
+auto moranFunction = [&moran](unsigned n, unsigned t)
+			{ 
+				return moran.probability_function(n,t);
+			};
+
+
+	std::ofstream WF_file("results_WF");
+	std::ofstream M_file("results_M");
+
+	if(!WF_file || !M_file)
+	{
+		std::cerr << "Cannot open all the output files." << std::endl;
+		return 1;
+	}
+
+	for(unsigned n = kInitialNumMin; n < kInitialNumMax; ++n)
+	{	
+		for(unsigned t = kMinTimesteps; t < kMaxTimesteps; ++t)
+		{
+			
+			WF_file << n << "\t" << t << "\t" << wright_fisherFunction(n,t) << std::endl;
+			M_file  << n << "\t" << t << "\t" << moranFunction(n,t) 		<< std::endl;
+		}
+	}
+
+	WF_file.close();
+	M_file.close();
+
+	std::cout << "data successfully written to files." << std::endl;
 
 //==========================================================FOKKER PLANCK TEST
 
 	
-	IsFPESolution([&wright_fisher](unsigned n, unsigned t)
-			{ 
-				return wright_fisher.probability_function(n,t);
-			}, 
+	IsFPESolution(wright_fisherFunction,
 			kInitialNumMin, kInitialNumMax, 
 			kMinTimesteps, kMaxTimesteps); //TODO implement transient
-
-
 
 //=========================================================GRAPHICS
 /*
