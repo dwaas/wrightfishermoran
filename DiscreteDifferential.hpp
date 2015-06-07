@@ -1,9 +1,9 @@
 /*
  * =====================================================================================
  *
- *       Filename:  DiscreteDerivative.hpp
+ *       Filename:  DiscreteDifferential.hpp
  *
- *    Description:  
+ *    Description:  contains DiscreteDerivative ad IsFPESolution()
  *
  *        Version:  1.0
  *        Created:  06/03/2015 12:21:23 PM
@@ -16,13 +16,14 @@
  * =====================================================================================
  */
 
-#ifndef  DISCRETEDERIVATIVE_INC
-#define  DISCRETEDERIVATIVE_INC
+#ifndef  DISCRETEDIFFERENTIAL_INC
+#define  DISCRETEDIFFERENTIAL_INC
 
 
-
+#include <cmath>				//std::abs, std::max()
 #include <functional>			//std::function
 #include <iostream> 			//std::cout
+#include <limits> 				//std::numeric_limits<T>::epsilon
 
 /* 
  * =====================================================================================
@@ -63,7 +64,7 @@ class DiscreteDerivative
 		int	_arg_min;
 		int	_arg_max;
 
-}; /* -----  end of template class DiscreteDerivative  ----- */
+}; /* -----  end of  class DiscreteDerivative  ----- */
 
 
 /*
@@ -112,6 +113,64 @@ double DiscreteDerivative::operator ()(int arg)
 
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  IsFPESolution
+ *  Description:  
+ * =====================================================================================
+ */
+bool
+IsFPESolution(std::function<double (int x, unsigned t)> f, 
+		int x_min, int x_max,
+		unsigned t_min, unsigned t_max)
+{
+	for(int x = x_min; x < x_max; ++x)// timestep = x_max segfaults //FIXME
+	{
+		for(unsigned timestep = t_min ; timestep < t_max; ++timestep)
+		{
+			auto f_t = [&f, x] (unsigned timestep) { return f(x, timestep); }; //bind one parameter
+			auto f_x = [&f, timestep] (unsigned x) { return f(x, timestep); };
+			
+			DiscreteDerivative df_dt(f_t, t_min, t_max);
+			
+			DiscreteDerivative df_dx(f_x, x_min, x_max);
+			DiscreteDerivative d2f_dx2([&df_dx] (unsigned x) { return df_dx(x); }, 
+					x_min, x_max);// lambda as delegate
 
-#endif   /* ----- #ifndef DISCRETEDERIVATIVE_INC  ----- */
+		
+			auto IsNumericallyEqual = [](double a, double b)
+			{
+				static const double eps = std::numeric_limits<double>::epsilon();
+				static const unsigned eps_multiplier = 1024;
+				
+				std::cout << "a = " << a << std::endl;
+				std::cout << "b = " << b << std::endl;
+
+				std::cout << "abs(a - b) = " << std::abs(a - b) << std::endl;
+				std::cout << "max(a,b) = " << eps_multiplier*eps*std::max(a, b) << std::endl;
+				
+				return std::abs(a - b) < eps_multiplier * eps * std::max(a,b);
+			};
+
+			if( !( IsNumericallyEqual(df_dt(timestep), 0.5* d2f_dx2(x) )) )
+			{
+				std::cout << " Not a solution for FPE! " << std::endl;
+				std::cout << " x = " << x << " timestep = " << timestep << std::endl;
+			
+				return false;
+			}
+			else
+			{
+				std::cout << " Congratulations !! " << std::endl;
+				std::cout << " You found the FPE solution " << std::endl;
+
+				return true;
+			}
+		}
+	}
+
+	return 0;
+}
+
+#endif   /* ----- #ifndef DISCRETEDIFFERENTIAL_INC  ----- */
 

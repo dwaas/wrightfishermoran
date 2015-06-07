@@ -1,4 +1,4 @@
-#include "DiscreteDerivative.hpp"
+#include "DiscreteDifferential.hpp"
 #include "Gene.h"
 #include "Population.h"
 
@@ -9,31 +9,33 @@
 
 
 //root
-#include "TCanvas.h"
-#include "TGraph2D.h"
 #include "TApplication.h"
 #include "TAxis.h"
 #include "TAxis3D.h"
+#include "TCanvas.h"
+#include "TGraph2D.h"
 #include "TStyle.h"
 #include "TView.h"
 
-//TODO order headers alphabetically
+//TODO clean code
 //TODO documentation
 //TODO random
-//TODO inline funcs
-//TODO fitting
-//TODO parallelisation
-//TODO start program with different parameters
-//TODO FPE function
-//TODO files in different folders
-//TODO use polymorphism for wright_fisher and moran
 //TODO use gnuplot instead of rootjunk
 
-//
+// FUTURE UPGRADES
+//TODO parallelisation
+//TODO wrapper class for function that includes domain
+//TODO fitting
+//TODO argc, argv
+//TODO hdr, src folders
+//TODO Population polymorphism
+//TODO templates in DiscreteDifferential
+
 //HYPOTHESES:
 //1) discrete derivative
 //2) discrete > continuous model(omitted fitting)
 //3) gegenbauer is bad
+
 
 
 int main(int argc,char* argv[])
@@ -41,10 +43,14 @@ int main(int argc,char* argv[])
 	typedef std::numeric_limits< double > double_limit;
 	std::cout.precision(double_limit::digits10);
 
-	// kInitialNumMin and kMaxTimesteps should be around the same order of magnitude
+	// kDeltaNum and kMaxTimesteps should be around the same order of magnitude
+	// to make a sensible comparison between WF and M models
 	//
-	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10020, 
-				 			kMinTimesteps = 0, kMaxTimesteps = 100;
+	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10100, 
+				 			kDeltaNum = kInitialNumMax - kInitialNumMin,
+				 			kMinTimesteps = 0, kMaxTimesteps = 100,
+							kTransient = 40;
+
 
 	std::cout << "program started" << std::endl;
 //initialise populations  
@@ -70,72 +76,15 @@ int main(int argc,char* argv[])
 */
 
 //==========================================================FOKKER PLANCK TEST
+
 	
-//
-//	auto testF = [](int arg)
-//	{	
-//		if(arg < 5){ return 2*arg;}
-//		if(arg == 5){return 30;}
-//		if(arg > 5){return (-4)*arg;}
-//	};
-//
+	IsFPESolution([&wright_fisher](unsigned n, unsigned t)
+			{ 
+				return wright_fisher.probability_function(n,t);
+			}, 
+			kInitialNumMin, kInitialNumMax, 
+			kMinTimesteps, kMaxTimesteps); //TODO implement transient
 
-	static const unsigned kDeltaNum = kInitialNumMax - kInitialNumMin;
-	
-	unsigned n = kInitialNumMin, t = 10; // t = kInitialNumMax segfaults //FIXME
-	
-
-	auto WFTimeFunction = [&wright_fisher, n] (unsigned t)
-							{
-								return wright_fisher.probability_function(n, t);  
-							};
-
-	std::cout << WFTimeFunction(t) << std::endl;
-
-	DiscreteDerivative d_WF_dt(WFTimeFunction, kMinTimesteps, kMaxTimesteps);
-
-	std::cout << " TIME  " << std::endl;
-	std::cout << "DiscreteDerivative constructed with arg_min = " << d_WF_dt.arg_min();
-	std::cout << " and arg_max =  " << d_WF_dt.arg_max() << std::endl;
-
-//	std::cout << "WF     in " <<  t-1 << "  = " << std::fixed << WFTimeFunction(t-1) << std::endl;
-//	std::cout << "WF     in " <<  t << "  = "   << std::fixed << WFTimeFunction(t) << std::endl;
-//	std::cout << "WF     in " <<  t+1 << "  = " << std::fixed << WFTimeFunction(t+1) << std::endl;
-	std::cout << "discr der in t = " << t << "  = " << std::fixed << d_WF_dt(t) << std::endl;
-
-//	std::cout << "manual dew in " << t << "  = " << std::fixed 
-//				<< (WFTimeFunction(t+1)- WFTimeFunction(t-1))/2.0 << std::endl;
-	
-	
-	auto WFNumFunction = [&wright_fisher, t] (unsigned n)
-						{
-							return wright_fisher.probability_function(n, t); 
-						};
-	DiscreteDerivative d_WF_dn(WFNumFunction, kInitialNumMin, kInitialNumMax);
-
-	std::cout << " NUM  " << std::endl;
-	std::cout << "DiscreteDerivative constructed with arg_min = " << d_WF_dn.arg_min();
-	std::cout << " and arg_max =  " << d_WF_dn.arg_max() << std::endl;
-
-	std::cout << "discr der1 in n = " << n << "  = " << std::fixed << d_WF_dn(n) << std::endl;
-//
-//	std::cout << "manual der1 in n = " << n << "  = " << std::fixed 
-//				<< (WFNumFunction(n+1)- WFNumFunction(n-1))/2.0 << std::endl;
-
-//2nd derivative in num
-	auto d_WF_dnFunc = [&d_WF_dn] (unsigned n) //delegate function aka wrapper
-					{
-						return d_WF_dn(n);
-					};
-	
-	DiscreteDerivative d2_WF_dn2(d_WF_dnFunc, kInitialNumMin, kInitialNumMax);
-
-	std::cout << "discr der2 in n = " << n << "  = " << std::fixed << d2_WF_dn2(n) << std::endl;
-
-//	std::cout << "manual der2 in n = " << n << "  = " << std::fixed 
-//				<< (d_WF_dnFunc(n+1)- d_WF_dnFunc(n-1))/2.0 << std::endl;
-
-//TODO FPE routine
 
 
 //=========================================================GRAPHICS
@@ -162,15 +111,15 @@ int main(int argc,char* argv[])
 
 	unsigned point_num = 0;
 	//Fill TGraph2D
-	for (unsigned n = 0; n < kDeltaNum; ++n)
+	for (unsigned num = 0; num < kDeltaNum; ++num)
 	{
-		for (unsigned t = kMinTimesteps; t < kMaxTimesteps; ++t)
+		for (unsigned timestep = kMinTimesteps; timestep < kMaxTimesteps; ++timestep)
 		{
-			wright_fisher_graph->SetPoint(point_num, n, t, moran.probability_function(n,t));
-			moran_graph->SetPoint(point_num, n, t, moran.probability_function(n,t));
+			wright_fisher_graph->SetPoint(point_num, num, timestep, moran.probability_function(num,timestep));
+			moran_graph->SetPoint(point_num, num, timestep, moran.probability_function(num,timestep));
 			++point_num;
 		}
-		std::cout << "set all t for n =  " << n << std::endl;
+		std::cout << "set all timestep for num =  " << num << std::endl;
 	}
 	std::cout << "point num = " << ++point_num << std::endl;
 	std::cout << "point num product = " << kDeltaNum * kMaxTimesteps << std::endl;

@@ -8,11 +8,11 @@ ARGS	Makefile	/^ARGS= .$/;"	m
 Allele	Gene.h	/^		typedef unsigned Allele; \/\/ no negative numbers allowed$/;"	t	class:Gene
 CC	Makefile	/^CC=g++$/;"	m
 DEBUGFLAGS	Makefile	/^DEBUGFLAGS= -O0 -g $(FLAGS)$/;"	m
-DEPS	Makefile	/^DEPS= Gene.h Population.h DiscreteDerivative.hpp$/;"	m
-DISCRETEDERIVATIVE_INC	DiscreteDerivative.hpp	20;"	d
-DiscreteDerivative	DiscreteDerivative.hpp	/^		DiscreteDerivative ( const DiscreteDerivative &other ) :$/;"	f	class:DiscreteDerivative
-DiscreteDerivative	DiscreteDerivative.hpp	/^		DiscreteDerivative (functor_type  f, int arg_min, int arg_max) : $/;"	f	class:DiscreteDerivative
-DiscreteDerivative	DiscreteDerivative.hpp	/^class DiscreteDerivative$/;"	c
+DEPS	Makefile	/^DEPS= Gene.h Population.h DiscreteDifferential.hpp$/;"	m
+DISCRETEDIFFERENTIAL_INC	DiscreteDifferential.hpp	20;"	d
+DiscreteDerivative	DiscreteDifferential.hpp	/^		DiscreteDerivative ( const DiscreteDerivative &other ) :$/;"	f	class:DiscreteDerivative
+DiscreteDerivative	DiscreteDifferential.hpp	/^		DiscreteDerivative (functor_type f, int arg_min, int arg_max) : $/;"	f	class:DiscreteDerivative
+DiscreteDerivative	DiscreteDifferential.hpp	/^class DiscreteDerivative$/;"	c
 EXE	Makefile	/^EXE= WFM$/;"	m
 Gene	Gene.h	/^		Gene ( const Allele &other )  : _allele( other % kNumAlleles) {}; \/\/ kindof copy constructor$/;"	f	class:Gene
 Gene	Gene.h	/^		Gene ( const Gene &other ) : _allele(other._allele) {};   \/* copy constructor *\/$/;"	f	class:Gene
@@ -20,6 +20,7 @@ Gene	Gene.h	/^		Gene () : _allele(rand() % kNumAlleles) {};    \/* constructor  
 Gene	Gene.h	/^class Gene$/;"	c
 GeneVec	Population.h	/^typedef std::vector < Gene > GeneVec;$/;"	t
 Gene_INC	Gene.h	20;"	d
+IsFPESolution	DiscreteDifferential.hpp	/^IsFPESolution(std::function<double (T x, T t)> &f, $/;"	f
 OBJS	Makefile	/^OBJS=main.o Gene.o Population.o$/;"	m
 Population	Population.cpp	/^Population::Population ( const Population &other )$/;"	f	class:Population
 Population	Population.cpp	/^Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, $/;"	f	class:Population
@@ -30,27 +31,33 @@ ROOTLIBS	Makefile	/^ROOTLIBS= `root-config --libs`$/;"	m
 RUNFLAGS	Makefile	/^RUNFLAGS= -O3 $(FLAGS)$/;"	m
 TwoVarFunc	Population.h	/^		typedef	std::vector < std::vector< double > > TwoVarFunc;$/;"	t	class:Population
 _allele	Gene.h	/^	Allele _allele;$/;"	m	class:Gene
-_arg_max	DiscreteDerivative.hpp	/^		int	_arg_max;$/;"	m	class:DiscreteDerivative
-_arg_min	DiscreteDerivative.hpp	/^		int	_arg_min;$/;"	m	class:DiscreteDerivative
-_f	DiscreteDerivative.hpp	/^		functor_type _f;$/;"	m	class:DiscreteDerivative
+_arg_max	DiscreteDifferential.hpp	/^		int	_arg_max;$/;"	m	class:DiscreteDerivative
+_arg_min	DiscreteDifferential.hpp	/^		int	_arg_min;$/;"	m	class:DiscreteDerivative
+_f	DiscreteDifferential.hpp	/^		functor_type _f;$/;"	m	class:DiscreteDerivative
 _gene_vec	Population.h	/^		GeneVec _gene_vec;$/;"	m	class:Population
+_kInitialNumMax	Population.h	/^		unsigned _kInitialNumMax;$/;"	m	class:Population
+_kInitialNumMin	Population.h	/^		unsigned _kInitialNumMin;$/;"	m	class:Population
+_kMaxTimesteps	Population.h	/^		unsigned _kMaxTimesteps; $/;"	m	class:Population
 _probability_function	Population.h	/^		TwoVarFunc _probability_function;$/;"	m	class:Population
 allele	Gene.h	/^		Allele allele() const{return _allele; }$/;"	f	class:Gene
-arg_max	DiscreteDerivative.hpp	/^		int arg_max() const {return _arg_max;}$/;"	f	class:DiscreteDerivative
-arg_min	DiscreteDerivative.hpp	/^		int arg_min() const {return _arg_min;}$/;"	f	class:DiscreteDerivative
+arg_max	DiscreteDifferential.hpp	/^		int arg_max() const {return _arg_max;}$/;"	f	class:DiscreteDerivative
+arg_min	DiscreteDifferential.hpp	/^		int arg_min() const {return _arg_min;}$/;"	f	class:DiscreteDerivative
 debug	Makefile	/^debug=0$/;"	m
-f	DiscreteDerivative.hpp	/^		functor_type f() const { return _f;}$/;"	f	class:DiscreteDerivative
-functor_type	DiscreteDerivative.hpp	/^		typedef std::function< int (int arg) > functor_type;$/;"	t	class:DiscreteDerivative
+f	DiscreteDifferential.hpp	/^		functor_type f() const { return _f;}$/;"	f	class:DiscreteDerivative
+functor_type	DiscreteDifferential.hpp	/^		typedef std::function< double (int arg) > functor_type;$/;"	t	class:DiscreteDerivative
 gene_vec	Population.h	/^		GeneVec gene_vec() const {return _gene_vec; }$/;"	f	class:Population
+kInitialNumMax	Population.h	/^		unsigned kInitialNumMax () const {return _kInitialNumMax;}$/;"	f	class:Population
+kInitialNumMin	Population.h	/^		unsigned kInitialNumMin () const {return _kInitialNumMin;}$/;"	f	class:Population
+kMaxTimesteps	Population.h	/^		unsigned kMaxTimesteps  () const {return _kMaxTimesteps;}$/;"	f	class:Population
 kNumAlleles	Gene.h	/^		static const unsigned kNumAlleles = 2;$/;"	m	class:Gene
 main	main.cpp	/^int main(int argc,char* argv[])$/;"	f
 operator !=	Gene.h	/^	friend bool operator != (const Gene &a, const Gene &b){ return (a._allele != b._allele); };$/;"	f	class:Gene
-operator ()	DiscreteDerivative.hpp	/^double DiscreteDerivative::operator ()(int arg)$/;"	f	class:DiscreteDerivative
+operator ()	DiscreteDifferential.hpp	/^double DiscreteDerivative::operator ()(int arg)$/;"	f	class:DiscreteDerivative
 operator <<	Gene.cpp	/^operator << ( std::ostream &os, const Gene &obj ) $/;"	f
 operator =	Gene.cpp	/^Gene::operator = ( const Gene &other )$/;"	f	class:Gene
 operator =	Population.cpp	/^Population::operator = ( const Population &other )$/;"	f	class:Population
 operator ==	Gene.h	/^	friend bool operator == (const Gene &a, const Gene &b){ return (a._allele == b._allele); };$/;"	f	class:Gene
-probability_function	Population.h	/^		double probability_function (unsigned n, unsigned t) const {return _probability_function[n][t]; }$/;"	f	class:Population
-~DiscreteDerivative	DiscreteDerivative.hpp	/^		~DiscreteDerivative () {};                          \/* destructor       *\/$/;"	f	class:DiscreteDerivative
+probability_function	Population.cpp	/^Population::probability_function(unsigned num, unsigned timestep) const$/;"	f	class:Population
+~DiscreteDerivative	DiscreteDifferential.hpp	/^		~DiscreteDerivative () {};                          \/* destructor       *\/$/;"	f	class:DiscreteDerivative
 ~Gene	Gene.cpp	/^Gene::~Gene ()$/;"	f	class:Gene
 ~Population	Population.cpp	/^Population::~Population ()$/;"	f	class:Population
