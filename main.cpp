@@ -9,15 +9,6 @@
 #include <time.h> 			//time()
 
 
-//root
-#include "TApplication.h"
-#include "TAxis.h"
-#include "TAxis3D.h"
-#include "TCanvas.h"
-#include "TGraph2D.h"
-#include "TStyle.h"
-#include "TView.h"
-
 //TODO clean code
 //TODO documentation
 //TODO random
@@ -119,83 +110,7 @@ auto moranFunction = [&moran](unsigned n, unsigned t)
 			kInitialNumMin, kInitialNumMax, 
 			kMinTimesteps, kMaxTimesteps); //TODO implement transient
 
-//=========================================================GRAPHICS
-/*
 
-	std::unique_ptr<TApplication> app( new TApplication("App", &argc, argv));
-
-//	std::unique_ptr<TAxis3D> axes( new TAxis3D);
-//	std::unique_ptr<TStyle> style( new TStyle);
-//	std::unique_ptr<TView> view( new TView(1));
-
-//	axes->ToggleRulers();
-//	axes->Draw();
-	
-	std::unique_ptr<TCanvas> canvas( new TCanvas("canvas","Surfaces Drawing Options",
-													200,10,700,900));
-	canvas -> Divide(2,1,0,0);
-
-	std::unique_ptr<TGraph2D> wright_fisher_graph( new TGraph2D(kDeltaNum*kMaxTimesteps));
-	wright_fisher_graph-> SetName("WF");
-	
-	std::unique_ptr<TGraph2D> moran_graph( new TGraph2D(kDeltaNum*kMaxTimesteps));
-	moran_graph-> SetName("M");
-
-	unsigned point_num = 0;
-	//Fill TGraph2D
-	for (unsigned num = 0; num < kDeltaNum; ++num)
-	{
-		for (unsigned timestep = kMinTimesteps; timestep < kMaxTimesteps; ++timestep)
-		{
-			wright_fisher_graph->SetPoint(point_num, num, timestep, moran.probability_function(num,timestep));
-			moran_graph->SetPoint(point_num, num, timestep, moran.probability_function(num,timestep));
-			++point_num;
-		}
-		std::cout << "set all timestep for num =  " << num << std::endl;
-	}
-	std::cout << "point num = " << ++point_num << std::endl;
-	std::cout << "point num product = " << kDeltaNum * kMaxTimesteps << std::endl;
-
-	//FIXME point_num is 1 more than the product
-
-//wf plot
-	wright_fisher_graph->SetMarkerColor(kGreen);
-
-	wright_fisher_graph->SetTitle("Wright Fisher graph");                          //axis' titles
-
-	wright_fisher_graph->GetXaxis() -> SetTitle("initial number of Genes");
-	wright_fisher_graph->GetXaxis() -> SetRangeUser(kInitialNumMin, kInitialNumMax);
-
-	wright_fisher_graph->GetYaxis() -> SetTitle("timesteps");
-	wright_fisher_graph->GetYaxis() -> SetRangeUser(kMinTimesteps, kMaxTimesteps);
-
-	wright_fisher_graph->GetZaxis() -> SetTitle("gene0/ total Genes");
-	wright_fisher_graph->GetZaxis() -> SetRangeUser(0.0, 1.0);
-
-	canvas -> cd(1);
-	wright_fisher_graph->Draw("P.");
-
-//moran plot	
-  
-	moran_graph->SetMarkerColor(kRed);
-
-	moran_graph->SetTitle("Moran graph");                          //axis' titles
-
-	moran_graph->GetXaxis() -> SetTitle("initial number of Genes");
-	moran_graph->GetXaxis() -> SetRangeUser(kInitialNumMin, kInitialNumMax);
-
-	moran_graph->GetYaxis() -> SetTitle("timesteps");
-	moran_graph->GetYaxis() -> SetRangeUser(kMinTimesteps, kMaxTimesteps);
-
-	moran_graph->GetZaxis() -> SetTitle("gene0/ total Genes");
-	moran_graph->GetZaxis() -> SetRangeUser(0.0, 1.0);
-
-	canvas -> cd(2);
-	moran_graph->Draw("P.");
-
-	app->Run();
-
-*/	
 	std::cout << "program ended" << std::endl;
 
 	return 0;
