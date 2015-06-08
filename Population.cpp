@@ -3,7 +3,8 @@
  *
  *       Filename:  Population.cpp
  *
- *    Description:  
+ *    Description: 	Class that implements population dynamics through a given set of
+ *    				instructions that are iterated.
  *
  *        Version:  1.0
  *        Created:  05/29/2015 02:35:29 PM
@@ -11,8 +12,6 @@
  *       Compiler:  gcc
  *
  *         Author:  Devin Waas (), dsc.waas@gmail.com
- *   Organization:  
- *
  * =====================================================================================
  */
 
@@ -30,12 +29,11 @@ Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNu
 						std::function<void (GeneVec&)> PopEvolution) :
 
 _gene_vec(kInitialNumMin),
-_probability_function( (kInitialNumMax - kInitialNumMin), std::vector<double> (kMaxTimesteps) ), 
+_probability_function( (kInitialNumMax - kInitialNumMin + 1), std::vector<double> (kMaxTimesteps + 1)), 
 _kInitialNumMin(kInitialNumMin), _kInitialNumMax(kInitialNumMax), 
 _kMaxTimesteps(kMaxTimesteps)
 
 {
-//FIXME: processes need absolute n number, matrices need relative ones 
 	for(unsigned num = _kInitialNumMin; num < _kInitialNumMax; ++num)
 	{
 		for (unsigned timestep = 0; timestep < _kMaxTimesteps; ++timestep)
@@ -44,9 +42,6 @@ _kMaxTimesteps(kMaxTimesteps)
 			
 			 double ratio = std::count(_gene_vec.begin(), _gene_vec.end(), 0) / (double) _gene_vec.size(); // 0 is the value of one allele			 
 			 _probability_function[num - kInitialNumMin][timestep] = ratio;
-
-//			 std::cout  << " num = " << num << " t = " << timestep << " Gene ratio is: " << ratio << std::endl;
-//			 std::cout  << " num = " << num << " t = " << timestep << " F probabil is: " << probability_function((num - kInitialNumMin), timestep) << std::endl;
 		} 
 	}
 	std::cout << _gene_vec.size() << std::endl; 
@@ -65,8 +60,6 @@ Population::Population ( const Population &other )
 {
 	_gene_vec = other._gene_vec;
 	_probability_function = other._probability_function;
-//check whether general function HAS assignment operator
-
 
 }  /* -----  end of method Population::Population  (copy constructor)  ----- */
 
@@ -96,8 +89,10 @@ Population::operator = ( const Population &other )
 		_gene_vec = other._gene_vec;
 		_probability_function = other._probability_function;
 	}
+
 	return *this;
 }  /* -----  end of method Population::operator =  (assignment operator)  ----- */
+
 
 /*
  *--------------------------------------------------------------------------------------
@@ -127,8 +122,7 @@ Population::probability_function(unsigned num, unsigned timestep) const
 	return _probability_function[(num - _kInitialNumMin)][timestep ]; 
 }
 
-/* DEBUGGING SNIPPETS
- 
+/* DEBUGGING SNIPPETS 
 
 
 

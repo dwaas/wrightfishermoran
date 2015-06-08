@@ -1,18 +1,45 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  main.cpp
+ *
+ *    Description:  The following simulation wants to show that the relative ratio in a monoallele function
+ *    				of n and t converges to a solution of the Fokker Planck equation in both the
+ *    				Wright-Fisher and Moran Population Dynamics' models.
+ *					
+ *					The program works as following:
+ *					1) constructs populations according to the two models, 
+ *						doing so the relative ratio function is tabulated
+ *					2) check whether the tabulated (discrete) functions are solutions of FPE
+ *				    3) to see whether they are similar, a gnuplot script is provided in the main directory
+ *			
+ *
+ *        Version:  1.0
+ *        Created:  06/08/2015 10:32:26 AM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Devin Waas (), dsc.waas@gmail.com
+ * =====================================================================================
+ */
+#include <stdlib.h>
+
+
 #include "DiscreteDifferential.hpp"
 #include "Gene.h"
 #include "Population.h"
 
 #include <fstream>			//std::ofstream
-#include <limits> 			//std::numeric_limits
 #include <iomanip>			//std::setprecision
+#include <limits> 			//std::numeric_limits
 #include <memory> 			//std::unique_ptr()
 #include <time.h> 			//time()
 
 
+//TODO readme.md
 //TODO clean code
 //TODO documentation
 //TODO random
-//TODO use gnuplot instead of rootjunk
 
 // FUTURE UPGRADES
 //TODO parallelisation
@@ -23,23 +50,17 @@
 //TODO Population polymorphism
 //TODO templates in DiscreteDifferential
 
-//HYPOTHESES:
-//1) discrete derivative
-//2) discrete > continuous model(omitted fitting)
-//3) gegenbauer is bad
-
-
 
 int main(int argc,char* argv[])
 {
+//definitions useful for numeric handling
 	typedef std::numeric_limits< double > double_limit;
 	std::cout.precision(double_limit::digits10);
 
-	// kDeltaNum and kMaxTimesteps should be around the same order of magnitude
+//INITIAL CONDITIONS
+	// kInitialNumMax-kInitialNumMin and kMaxTimesteps should be around the same order of magnitude
 	// to make a sensible comparison between WF and M models
-	//
 	static const unsigned kInitialNumMin = 10000, kInitialNumMax = 10100, 
-				 			kDeltaNum = kInitialNumMax - kInitialNumMin,
 				 			kMinTimesteps = 0, kMaxTimesteps = 100,
 							kTransient = 40;
 
@@ -108,7 +129,7 @@ auto moranFunction = [&moran](unsigned n, unsigned t)
 	
 	IsFPESolution(wright_fisherFunction,
 			kInitialNumMin, kInitialNumMax, 
-			kMinTimesteps, kMaxTimesteps); //TODO implement transient
+			(kMinTimesteps + kTransient), kMaxTimesteps); //we assume there will be a transient period
 
 
 	std::cout << "program ended" << std::endl;

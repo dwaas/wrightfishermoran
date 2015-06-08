@@ -11,8 +11,6 @@
  *       Compiler:  gcc
  *
  *         Author:  Devin Waas (), dsc.waas@gmail.com
- *   Organization:  
- *
  * =====================================================================================
  */
 
@@ -28,7 +26,9 @@
 /* 
  * =====================================================================================
  *        Class:  DiscreteDerivative
- *  Description:  
+ *  Description:  Functor that derives through discrete differences; 
+ *  				backward/centered/forward derivatives implemented.
+ *  				The step difference is always 1, it is therefore omitted.
  * =====================================================================================
  */
 
@@ -39,19 +39,17 @@ class DiscreteDerivative
 
 		// ====================  LIFECYCLE     =======================================
 		DiscreteDerivative (functor_type f, int arg_min, int arg_max) : 
-		_f(f), _arg_min(arg_min), _arg_max(arg_max) {};               /* constructor      */
+		_f(f), _arg_min(arg_min), _arg_max(arg_max) {};               			/* constructor      */
 	//FIXME Assumes that arg_min<arg_max	
 		DiscreteDerivative ( const DiscreteDerivative &other ) :
-		_f(other._f), _arg_min(other._arg_min), _arg_max(other._arg_max) {}; /* copy constructor */
+		_f(other._f), _arg_min(other._arg_min), _arg_max(other._arg_max) {}; 	/* copy constructor */
 		
-		~DiscreteDerivative () {};                          /* destructor       */
+		~DiscreteDerivative () {};                          					/* destructor       */
 
 		/* ====================  ACCESSORS     ======================================= */
 		functor_type f() const { return _f;}
 		int arg_min() const {return _arg_min;}
 		int arg_max() const {return _arg_max;}
-
-		/* ====================  MUTATORS      ======================================= */
 
 		/* ====================  OPERATORS     ======================================= */
 		double operator ()(int arg);
@@ -116,7 +114,7 @@ double DiscreteDerivative::operator ()(int arg)
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  IsFPESolution
- *  Description:  
+ *  Description:  Numerical tolerance implemented; //TODO tweak number
  * =====================================================================================
  */
 bool
@@ -124,31 +122,31 @@ IsFPESolution(std::function<double (int x, unsigned t)> f,
 		int x_min, int x_max,
 		unsigned t_min, unsigned t_max)
 {
-	for(int x = x_min; x < x_max; ++x)// timestep = x_max segfaults //FIXME
+	for(int x = x_min; x < x_max; ++x)
 	{
 		for(unsigned timestep = t_min ; timestep < t_max; ++timestep)
 		{
 			auto f_t = [&f, x] (unsigned timestep) { return f(x, timestep); }; //bind one parameter
 			auto f_x = [&f, timestep] (unsigned x) { return f(x, timestep); };
-			
+
 			DiscreteDerivative df_dt(f_t, t_min, t_max);
-			
+
 			DiscreteDerivative df_dx(f_x, x_min, x_max);
 			DiscreteDerivative d2f_dx2([&df_dx] (unsigned x) { return df_dx(x); }, 
-					x_min, x_max);// lambda as delegate
+										x_min, x_max);// lambda as delegate
 
-		
+
 			auto IsNumericallyEqual = [](double a, double b)
 			{
 				static const double eps = std::numeric_limits<double>::epsilon();
 				static const unsigned eps_multiplier = 1024;
-				
+
 				std::cout << "a = " << a << std::endl;
 				std::cout << "b = " << b << std::endl;
 
 				std::cout << "abs(a - b) = " << std::abs(a - b) << std::endl;
 				std::cout << "max(a,b) = " << eps_multiplier*eps*std::max(a, b) << std::endl;
-				
+
 				return std::abs(a - b) < eps_multiplier * eps * std::max(a,b);
 			};
 
@@ -156,7 +154,7 @@ IsFPESolution(std::function<double (int x, unsigned t)> f,
 			{
 				std::cout << " Not a solution for FPE! " << std::endl;
 				std::cout << " x = " << x << " timestep = " << timestep << std::endl;
-			
+
 				return false;
 			}
 			else

@@ -3,7 +3,7 @@
  *
  *       Filename:  Gene.cpp
  *
- *    Description:  
+ *    Description: 	Monoallelic Gene locus 
  *
  *        Version:  1.0
  *        Created:  05/29/2015 02:30:18 PM
@@ -11,8 +11,6 @@
  *       Compiler:  gcc
  *
  *         Author:  Devin Waas (), dsc.waas@gmail.com
- *   Organization:  
- *
  * =====================================================================================
  */
 
@@ -43,7 +41,6 @@ Gene::~Gene ()
 	std::ostream& 
 operator << ( std::ostream &os, const Gene &obj ) 
 {
-//	std::cout << "I get called" << std::endl;
 	os << obj.allele() << std::endl;
 	return os;
 }		/* -----  end of function operator <<  ----- */
@@ -64,6 +61,4 @@ Gene::operator = ( const Gene &other )
 	}
 	return *this;
 }  /* -----  end of method Gene::operator =  (assignment operator)  ----- */
-
-
 

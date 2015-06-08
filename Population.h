@@ -2,7 +2,8 @@
  * =====================================================================================
  *       Filename:  Population.h
  *
- *    Description:  
+ *    Description: 	Class that implements population dynamics through a given set of
+ *    				instructions that are iterated.
  *
  *        Version:  1.0
  *        Created:  05/29/2015 02:21:53 PM
@@ -10,8 +11,6 @@
  *       Compiler:  gcc
  *
  *         Author:  Devin Waas (), dsc.waas@gmail.com
- *   Organization:  
- *
  * =====================================================================================
  */
 
@@ -29,12 +28,15 @@
 
 
 
+
+
 typedef std::vector < Gene > GeneVec;
 
 /*
  * =====================================================================================
  *        Class:  Population
- *  Description:  
+ *  Description:  Class that implements population dynamics through a given set of
+ *    				instructions that are iterated for different timesteps and initial nums
  * =====================================================================================
  */
 class Population
@@ -58,9 +60,6 @@ class Population
 		unsigned kInitialNumMax () const {return _kInitialNumMax;}
 		unsigned kMaxTimesteps  () const {return _kMaxTimesteps;}
 
-		/* ====================  MUTATORS      ======================================= */
-		//no need to manually change neither gene_vec nor probability_function
-
 		/* ====================  OPERATORS     ======================================= */
 
 		Population& operator = ( const Population &other ); /* assignment operator */
@@ -78,7 +77,6 @@ class Population
 		unsigned _kMaxTimesteps; 
 
 }; /* -----  end of class Population  ----- */
-
 
 
 #endif   /* ----- #ifndef Population_INC  ----- */

@@ -14,18 +14,18 @@ DiscreteDerivative	DiscreteDifferential.hpp	/^		DiscreteDerivative ( const Discr
 DiscreteDerivative	DiscreteDifferential.hpp	/^		DiscreteDerivative (functor_type f, int arg_min, int arg_max) : $/;"	f	class:DiscreteDerivative
 DiscreteDerivative	DiscreteDifferential.hpp	/^class DiscreteDerivative$/;"	c
 EXE	Makefile	/^EXE= WFM$/;"	m
-Gene	Gene.h	/^		Gene ( const Allele &other )  : _allele( other % kNumAlleles) {}; \/\/ kindof copy constructor$/;"	f	class:Gene
-Gene	Gene.h	/^		Gene ( const Gene &other ) : _allele(other._allele) {};   \/* copy constructor *\/$/;"	f	class:Gene
-Gene	Gene.h	/^		Gene () : _allele(rand() % kNumAlleles) {};    \/* constructor      *\/$/;"	f	class:Gene
+Gene	Gene.h	/^		Gene ( const Allele &other )  : _allele( other % kNumAlleles) {}; 	$/;"	f	class:Gene
+Gene	Gene.h	/^		Gene ( const Gene &other ) : _allele(other._allele) {};   				\/* copy constructor *\/$/;"	f	class:Gene
+Gene	Gene.h	/^		Gene () : _allele(rand() % kNumAlleles) {};    							\/* constructor      *\/$/;"	f	class:Gene
 Gene	Gene.h	/^class Gene$/;"	c
 GeneVec	Population.h	/^typedef std::vector < Gene > GeneVec;$/;"	t
-Gene_INC	Gene.h	20;"	d
-IsFPESolution	DiscreteDifferential.hpp	/^IsFPESolution(std::function<double (T x, T t)> &f, $/;"	f
+Gene_INC	Gene.h	18;"	d
+IsFPESolution	DiscreteDifferential.hpp	/^IsFPESolution(std::function<double (int x, unsigned t)> f, $/;"	f
 OBJS	Makefile	/^OBJS=main.o Gene.o Population.o$/;"	m
 Population	Population.cpp	/^Population::Population ( const Population &other )$/;"	f	class:Population
 Population	Population.cpp	/^Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, $/;"	f	class:Population
 Population	Population.h	/^class Population$/;"	c
-Population_INC	Population.h	19;"	d
+Population_INC	Population.h	18;"	d
 ROOTCFLAGS	Makefile	/^ROOTCFLAGS= `root-config --cflags`$/;"	m
 ROOTLIBS	Makefile	/^ROOTLIBS= `root-config --libs`$/;"	m
 RUNFLAGS	Makefile	/^RUNFLAGS= -O3 $(FLAGS)$/;"	m

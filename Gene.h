@@ -3,7 +3,7 @@
  *
  *       Filename:  Gene.h
  *
- *    Description:  
+ *    Description:  Monoallelic Gene locus
  *
  *        Version:  1.0
  *        Created:  05/29/2015 02:28:52 PM
@@ -11,8 +11,6 @@
  *       Compiler:  gcc
  *
  *         Author:  Devin Waas (), dsc.waas@gmail.com
- *   Organization:  
- *
  * =====================================================================================
  */
 
@@ -29,7 +27,8 @@
 /*
  * =====================================================================================
  *        Class:  Gene
- *  Description:  
+ *  Description:  The class models a monoallelic Gene; 
+ *  				the allele type is an unsigned int instead of the widely used char.
  * =====================================================================================
  */
 class Gene
@@ -40,10 +39,10 @@ class Gene
 		typedef unsigned Allele; // no negative numbers allowed
 
 	/* ====================  LIFECYCLE     ======================================= */
-		Gene () : _allele(rand() % kNumAlleles) {};    /* constructor      */
-		Gene ( const Allele &other )  : _allele( other % kNumAlleles) {}; // kindof copy constructor
-		Gene ( const Gene &other ) : _allele(other._allele) {};   /* copy constructor */
-		~Gene ();                            /* destructor       */
+		Gene () : _allele(rand() % kNumAlleles) {};    							/* constructor      */
+		Gene ( const Allele &other )  : _allele( other % kNumAlleles) {}; 	
+		Gene ( const Gene &other ) : _allele(other._allele) {};   				/* copy constructor */
+		~Gene ();                            									/* destructor       */
 
 
 		/* ====================  ACCESSORS     ======================================= */
@@ -52,7 +51,7 @@ class Gene
 
 		/* ====================  OPERATORS     ======================================= */
 
-		Gene& operator = ( const Gene &other ); /* assignment operator */
+		Gene& operator = ( const Gene &other ); 								/* assignment operator */
 
 	protected:
 
@@ -68,9 +67,6 @@ class Gene
 	
 
 }; /* -----  end of class Gene  ----- */
-
-
-
 
 
 #endif   /* ----- #ifndef Gene_INC  ----- */
