@@ -1,11 +1,3 @@
-#ignore build dir
-
-build/*
-
-#ignore any executable
-
-bin/*
-
-#specific files
+#ignore specific files
 
 tags
