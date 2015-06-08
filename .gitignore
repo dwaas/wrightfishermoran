@@ -6,3 +6,6 @@ build/*
 
 bin/*
 
+#specific files
+
+tags

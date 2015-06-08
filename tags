@@ -25,6 +25,7 @@ Gene_INC	include/Gene.h	18;"	d
 INCLUDEDIR	Makefile	/^INCLUDEDIR= include\/$/;"	m
 IsFPESolution	include/DiscreteDifferential.hpp	/^IsFPESolution(std::function<double (int x, unsigned t)> f, $/;"	f
 OBJS	Makefile	/^OBJS = $(addprefix $(BUILDDIR), main.o Gene.o Population.o)$/;"	m
+PLOTDIR	Makefile	/^PLOTDIR= plot\/$/;"	m
 Population	include/Population.h	/^class Population$/;"	c
 Population	src/Population.cpp	/^Population::Population ( const Population &other )$/;"	f	class:Population
 Population	src/Population.cpp	/^Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, $/;"	f	class:Population
