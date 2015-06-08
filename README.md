@@ -7,6 +7,7 @@ KNOWN BUGS:
 
 USAGE:
 select initial conditions in main.cpp
+
 make run
 
 for GNUPLOT
