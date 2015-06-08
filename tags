@@ -5,59 +5,65 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 ARGS	Makefile	/^ARGS= .$/;"	m
-Allele	Gene.h	/^		typedef unsigned Allele; \/\/ no negative numbers allowed$/;"	t	class:Gene
+Allele	include/Gene.h	/^		typedef unsigned Allele; \/\/ no negative numbers allowed$/;"	t	class:Gene
+BUILDDIR	Makefile	/^BUILDDIR= build\/$/;"	m
 CC	Makefile	/^CC=g++$/;"	m
 DEBUGFLAGS	Makefile	/^DEBUGFLAGS= -O0 -g $(FLAGS)$/;"	m
-DEPS	Makefile	/^DEPS= Gene.h Population.h DiscreteDifferential.hpp$/;"	m
-DISCRETEDIFFERENTIAL_INC	DiscreteDifferential.hpp	20;"	d
-DiscreteDerivative	DiscreteDifferential.hpp	/^		DiscreteDerivative ( const DiscreteDerivative &other ) :$/;"	f	class:DiscreteDerivative
-DiscreteDerivative	DiscreteDifferential.hpp	/^		DiscreteDerivative (functor_type f, int arg_min, int arg_max) : $/;"	f	class:DiscreteDerivative
-DiscreteDerivative	DiscreteDifferential.hpp	/^class DiscreteDerivative$/;"	c
-EXE	Makefile	/^EXE= WFM$/;"	m
-Gene	Gene.h	/^		Gene ( const Allele &other )  : _allele( other % kNumAlleles) {}; 	$/;"	f	class:Gene
-Gene	Gene.h	/^		Gene ( const Gene &other ) : _allele(other._allele) {};   				\/* copy constructor *\/$/;"	f	class:Gene
-Gene	Gene.h	/^		Gene () : _allele(rand() % kNumAlleles) {};    							\/* constructor      *\/$/;"	f	class:Gene
-Gene	Gene.h	/^class Gene$/;"	c
-GeneVec	Population.h	/^typedef std::vector < Gene > GeneVec;$/;"	t
-Gene_INC	Gene.h	18;"	d
-IsFPESolution	DiscreteDifferential.hpp	/^IsFPESolution(std::function<double (int x, unsigned t)> f, $/;"	f
-OBJS	Makefile	/^OBJS=main.o Gene.o Population.o$/;"	m
-Population	Population.cpp	/^Population::Population ( const Population &other )$/;"	f	class:Population
-Population	Population.cpp	/^Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, $/;"	f	class:Population
-Population	Population.h	/^class Population$/;"	c
-Population_INC	Population.h	18;"	d
+DEPS	Makefile	/^DEPS = $(addprefix $(INCLUDEDIR), Gene.h Population.h DiscreteDifferential.hpp )$/;"	m
+DISCRETEDIFFERENTIAL_INC	include/DiscreteDifferential.hpp	18;"	d
+DiscreteDerivative	include/DiscreteDifferential.hpp	/^		DiscreteDerivative ( const DiscreteDerivative &other ) :$/;"	f	class:DiscreteDerivative
+DiscreteDerivative	include/DiscreteDifferential.hpp	/^		DiscreteDerivative (functor_type f, int arg_min, int arg_max) : $/;"	f	class:DiscreteDerivative
+DiscreteDerivative	include/DiscreteDifferential.hpp	/^class DiscreteDerivative$/;"	c
+EXE	Makefile	/^EXE = $(addprefix $(EXECDIR), WFM )$/;"	m
+EXECDIR	Makefile	/^EXECDIR= bin\/$/;"	m
+Gene	include/Gene.h	/^		Gene ( const Allele &other )  : _allele( other % kNumAlleles) {}; 	$/;"	f	class:Gene
+Gene	include/Gene.h	/^		Gene ( const Gene &other ) : _allele(other._allele) {};   				\/* copy constructor *\/$/;"	f	class:Gene
+Gene	include/Gene.h	/^		Gene () : _allele(rand() % kNumAlleles) {};    							\/* constructor      *\/$/;"	f	class:Gene
+Gene	include/Gene.h	/^class Gene$/;"	c
+GeneVec	include/Population.h	/^typedef std::vector < Gene > GeneVec;$/;"	t
+Gene_INC	include/Gene.h	18;"	d
+INCLUDEDIR	Makefile	/^INCLUDEDIR= include\/$/;"	m
+IsFPESolution	include/DiscreteDifferential.hpp	/^IsFPESolution(std::function<double (int x, unsigned t)> f, $/;"	f
+OBJS	Makefile	/^OBJS = $(addprefix $(BUILDDIR), main.o Gene.o Population.o)$/;"	m
+Population	include/Population.h	/^class Population$/;"	c
+Population	src/Population.cpp	/^Population::Population ( const Population &other )$/;"	f	class:Population
+Population	src/Population.cpp	/^Population::Population (const unsigned kInitialNumMin, const unsigned kInitialNumMax, $/;"	f	class:Population
+Population_INC	include/Population.h	18;"	d
+RESULTSDIR	Makefile	/^RESULTSDIR= results\/$/;"	m
 ROOTCFLAGS	Makefile	/^ROOTCFLAGS= `root-config --cflags`$/;"	m
 ROOTLIBS	Makefile	/^ROOTLIBS= `root-config --libs`$/;"	m
 RUNFLAGS	Makefile	/^RUNFLAGS= -O3 $(FLAGS)$/;"	m
-TwoVarFunc	Population.h	/^		typedef	std::vector < std::vector< double > > TwoVarFunc;$/;"	t	class:Population
-_allele	Gene.h	/^	Allele _allele;$/;"	m	class:Gene
-_arg_max	DiscreteDifferential.hpp	/^		int	_arg_max;$/;"	m	class:DiscreteDerivative
-_arg_min	DiscreteDifferential.hpp	/^		int	_arg_min;$/;"	m	class:DiscreteDerivative
-_f	DiscreteDifferential.hpp	/^		functor_type _f;$/;"	m	class:DiscreteDerivative
-_gene_vec	Population.h	/^		GeneVec _gene_vec;$/;"	m	class:Population
-_kInitialNumMax	Population.h	/^		unsigned _kInitialNumMax;$/;"	m	class:Population
-_kInitialNumMin	Population.h	/^		unsigned _kInitialNumMin;$/;"	m	class:Population
-_kMaxTimesteps	Population.h	/^		unsigned _kMaxTimesteps; $/;"	m	class:Population
-_probability_function	Population.h	/^		TwoVarFunc _probability_function;$/;"	m	class:Population
-allele	Gene.h	/^		Allele allele() const{return _allele; }$/;"	f	class:Gene
-arg_max	DiscreteDifferential.hpp	/^		int arg_max() const {return _arg_max;}$/;"	f	class:DiscreteDerivative
-arg_min	DiscreteDifferential.hpp	/^		int arg_min() const {return _arg_min;}$/;"	f	class:DiscreteDerivative
+SRCDIR	Makefile	/^SRCDIR= src\/$/;"	m
+SRCEXT	Makefile	/^SRCEXT= cpp$/;"	m
+TwoVarFunc	include/Population.h	/^		typedef	std::vector < std::vector< double > > TwoVarFunc;$/;"	t	class:Population
+_allele	include/Gene.h	/^	Allele _allele;$/;"	m	class:Gene
+_arg_max	include/DiscreteDifferential.hpp	/^		int	_arg_max;$/;"	m	class:DiscreteDerivative
+_arg_min	include/DiscreteDifferential.hpp	/^		int	_arg_min;$/;"	m	class:DiscreteDerivative
+_f	include/DiscreteDifferential.hpp	/^		functor_type _f;$/;"	m	class:DiscreteDerivative
+_gene_vec	include/Population.h	/^		GeneVec _gene_vec;$/;"	m	class:Population
+_kInitialNumMax	include/Population.h	/^		unsigned _kInitialNumMax;$/;"	m	class:Population
+_kInitialNumMin	include/Population.h	/^		unsigned _kInitialNumMin;$/;"	m	class:Population
+_kMaxTimesteps	include/Population.h	/^		unsigned _kMaxTimesteps; $/;"	m	class:Population
+_probability_function	include/Population.h	/^		TwoVarFunc _probability_function;$/;"	m	class:Population
+allele	include/Gene.h	/^		Allele allele() const{return _allele; }$/;"	f	class:Gene
+arg_max	include/DiscreteDifferential.hpp	/^		int arg_max() const {return _arg_max;}$/;"	f	class:DiscreteDerivative
+arg_min	include/DiscreteDifferential.hpp	/^		int arg_min() const {return _arg_min;}$/;"	f	class:DiscreteDerivative
 debug	Makefile	/^debug=0$/;"	m
-f	DiscreteDifferential.hpp	/^		functor_type f() const { return _f;}$/;"	f	class:DiscreteDerivative
-functor_type	DiscreteDifferential.hpp	/^		typedef std::function< double (int arg) > functor_type;$/;"	t	class:DiscreteDerivative
-gene_vec	Population.h	/^		GeneVec gene_vec() const {return _gene_vec; }$/;"	f	class:Population
-kInitialNumMax	Population.h	/^		unsigned kInitialNumMax () const {return _kInitialNumMax;}$/;"	f	class:Population
-kInitialNumMin	Population.h	/^		unsigned kInitialNumMin () const {return _kInitialNumMin;}$/;"	f	class:Population
-kMaxTimesteps	Population.h	/^		unsigned kMaxTimesteps  () const {return _kMaxTimesteps;}$/;"	f	class:Population
-kNumAlleles	Gene.h	/^		static const unsigned kNumAlleles = 2;$/;"	m	class:Gene
-main	main.cpp	/^int main(int argc,char* argv[])$/;"	f
-operator !=	Gene.h	/^	friend bool operator != (const Gene &a, const Gene &b){ return (a._allele != b._allele); };$/;"	f	class:Gene
-operator ()	DiscreteDifferential.hpp	/^double DiscreteDerivative::operator ()(int arg)$/;"	f	class:DiscreteDerivative
-operator <<	Gene.cpp	/^operator << ( std::ostream &os, const Gene &obj ) $/;"	f
-operator =	Gene.cpp	/^Gene::operator = ( const Gene &other )$/;"	f	class:Gene
-operator =	Population.cpp	/^Population::operator = ( const Population &other )$/;"	f	class:Population
-operator ==	Gene.h	/^	friend bool operator == (const Gene &a, const Gene &b){ return (a._allele == b._allele); };$/;"	f	class:Gene
-probability_function	Population.cpp	/^Population::probability_function(unsigned num, unsigned timestep) const$/;"	f	class:Population
-~DiscreteDerivative	DiscreteDifferential.hpp	/^		~DiscreteDerivative () {};                          \/* destructor       *\/$/;"	f	class:DiscreteDerivative
-~Gene	Gene.cpp	/^Gene::~Gene ()$/;"	f	class:Gene
-~Population	Population.cpp	/^Population::~Population ()$/;"	f	class:Population
+f	include/DiscreteDifferential.hpp	/^		functor_type f() const { return _f;}$/;"	f	class:DiscreteDerivative
+functor_type	include/DiscreteDifferential.hpp	/^		typedef std::function< double (int arg) > functor_type;$/;"	t	class:DiscreteDerivative
+gene_vec	include/Population.h	/^		GeneVec gene_vec() const {return _gene_vec; }$/;"	f	class:Population
+kInitialNumMax	include/Population.h	/^		unsigned kInitialNumMax () const {return _kInitialNumMax;}$/;"	f	class:Population
+kInitialNumMin	include/Population.h	/^		unsigned kInitialNumMin () const {return _kInitialNumMin;}$/;"	f	class:Population
+kMaxTimesteps	include/Population.h	/^		unsigned kMaxTimesteps  () const {return _kMaxTimesteps;}$/;"	f	class:Population
+kNumAlleles	include/Gene.h	/^		static const unsigned kNumAlleles = 2;$/;"	m	class:Gene
+main	src/main.cpp	/^int main(int argc,char* argv[])$/;"	f
+operator !=	include/Gene.h	/^	friend bool operator != (const Gene &a, const Gene &b){ return (a._allele != b._allele); };$/;"	f	class:Gene
+operator ()	include/DiscreteDifferential.hpp	/^double DiscreteDerivative::operator ()(int arg)$/;"	f	class:DiscreteDerivative
+operator <<	src/Gene.cpp	/^operator << ( std::ostream &os, const Gene &obj ) $/;"	f
+operator =	src/Gene.cpp	/^Gene::operator = ( const Gene &other )$/;"	f	class:Gene
+operator =	src/Population.cpp	/^Population::operator = ( const Population &other )$/;"	f	class:Population
+operator ==	include/Gene.h	/^	friend bool operator == (const Gene &a, const Gene &b){ return (a._allele == b._allele); };$/;"	f	class:Gene
+probability_function	src/Population.cpp	/^Population::probability_function(unsigned num, unsigned timestep) const$/;"	f	class:Population
+~DiscreteDerivative	include/DiscreteDifferential.hpp	/^		~DiscreteDerivative () {};                          					\/* destructor       *\/$/;"	f	class:DiscreteDerivative
+~Gene	src/Gene.cpp	/^Gene::~Gene ()$/;"	f	class:Gene
+~Population	src/Population.cpp	/^Population::~Population ()$/;"	f	class:Population

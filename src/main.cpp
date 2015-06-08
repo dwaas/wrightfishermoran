@@ -25,9 +25,9 @@
 #include <stdlib.h>
 
 
-#include "DiscreteDifferential.hpp"
-#include "Gene.h"
-#include "Population.h"
+#include "../include/DiscreteDifferential.hpp"
+#include "../include/Gene.h"
+#include "../include/Population.h"
 
 #include <fstream>			//std::ofstream
 #include <iomanip>			//std::setprecision
@@ -36,9 +36,6 @@
 #include <time.h> 			//time()
 
 
-//TODO readme.md
-//TODO clean code
-//TODO documentation
 //TODO random
 
 // FUTURE UPGRADES
@@ -46,7 +43,6 @@
 //TODO wrapper class for function that includes domain
 //TODO fitting
 //TODO argc, argv
-//TODO hdr, src folders
 //TODO Population polymorphism
 //TODO templates in DiscreteDifferential
 
@@ -100,8 +96,8 @@ auto moranFunction = [&moran](unsigned n, unsigned t)
 			};
 
 
-	std::ofstream WF_file("results_WF");
-	std::ofstream M_file("results_M");
+	std::ofstream WF_file("results/WF.dat");
+	std::ofstream M_file("results/M.dat");
 
 	if(!WF_file || !M_file)
 	{

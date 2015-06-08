@@ -3,7 +3,7 @@
 reset
 
 set terminal png
-set output "WFMFunctions.png"
+set output "results/WFMFunctions.png"
 
 set title "Wright Fisher and Moran comparison plot"
 
@@ -17,5 +17,5 @@ set zlabel "Ratio"
 set key top
 
 
-splot "results_WF" title "Wright-Fisher" lt rgb "green" with dots, \
-	  "results_M" title "Moran" lt rgb "red" with dots
+splot "results/WF.dat" title "Wright-Fisher" lt rgb "green" with dots, \
+	  "results/M.dat" title "Moran" lt rgb "red" with dots

@@ -9,24 +9,36 @@
 # MAKE DEBUG debug=1
 # MAKE
 # 
-# change .c to .whateverYourExtension
-# change variables
 #
-
-
+#TODO  use this $(addprefix $(SRCDIR), SRCEXT) instead of $(SRCDIR).%$(SRCEXT)
 
 CC=g++
+SRCEXT= cpp
+
+SRCDIR= src/
+BUILDDIR= build/
+EXECDIR= bin/
+INCLUDEDIR= include/
+RESULTSDIR= results/
+PLOTDIR= plot/
+
 ROOTLIBS= `root-config --libs`
 ROOTCFLAGS= `root-config --cflags`
-FLAGS+= -Wall -Wextra -pedantic -march=native -pg -std=c++11#-ftree-loop-im -fprofile-arcs -ftest-coverage #-funroll-loops 
-OBJS=main.o Gene.o Population.o
-DEPS= Gene.h Population.h DiscreteDifferential.hpp
+
+FLAGS+= -Wall -Wextra -pedantic -march=native -std=c++11# -pg -ftree-loop-im -fprofile-arcs -ftest-coverage #-funroll-loops 
+
 DEBUGFLAGS= -O0 -g $(FLAGS)
 RUNFLAGS= -O3 $(FLAGS)
 debug=0
 
-EXE= WFM
+
+
+OBJS = $(addprefix $(BUILDDIR), main.o Gene.o Population.o)
+DEPS = $(addprefix $(INCLUDEDIR), Gene.h Population.h DiscreteDifferential.hpp )
+EXE = $(addprefix $(EXECDIR), WFM )
 ARGS= .
+
+###################################################makefile begin
 
 ifneq ($(debug), 0)
 debug: clean new $(EXE)
@@ -35,13 +47,13 @@ debug: clean new $(EXE)
 $(EXE): $(OBJS)
 	$(CC) -o $@ $^ $(DEBUGFLAGS) $(ROOTLIBS)
 
-%.o:  %.cpp $(DEPS) 
+$(BUILDDIR)%.o:  $(SRCDIR)%.$(SRCEXT) $(DEPS) 
 	$(CC) -c -o $@ $< $(DEBUGFLAGS) $(ROOTCFLAGS)
 else 
 $(EXE): $(OBJS)
 	$(CC) -o $@ $^ $(RUNFLAGS) $(ROOTLIBS)
 
-%.o:  %.cpp $(DEPS) 
+$(BUILDDIR)%.o:  $(SRCDIR)%.$(SRCEXT) $(DEPS) 
 	$(CC) -c -o $@ $< $(RUNFLAGS) $(ROOTCFLAGS)
 
 run: $(EXE)
@@ -51,16 +63,22 @@ run: $(EXE)
 endif
 
 #all:
-#	$(CC) $(FLAGS) %.cpp -o $(EXE)
+#	$(CC) $(FLAGS) $(SRCDIR)%.$(SRCEXT) -o $(EXE)
 
 clean: 
-	rm -f *.o $(EXE) gmon.out prof *.gcov *gcno
+	rm -f $(OBJS) $(EXE) gmon.out prof *.gcov *gcno
 new:
-	rm -f *.S output.dat *.pos
+	rm -f $(RESULTSDIR)*
+
+plot:
+	$(PLOTDIR)plot.sh
+
+
+.PHONY: plot new clean
 
 #PROFILING and DEBUGGING
-prof:
-	gprof $(EXE) gmon.out > prof
+#prof:
+#	gprof $(EXE) gmon.out > prof
 
 
 #FLAGS=  -O3 -ipo -static  -c 
