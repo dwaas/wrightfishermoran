@@ -2,7 +2,7 @@
 
 reset
 
-set terminal png
+set terminal x11
 set output "results/WFMFunctions.png"
 
 set title "Wright Fisher and Moran comparison plot"

@@ -60,6 +60,7 @@ int main(int argc,char* argv[])
 				 			kMinTimesteps = 0, kMaxTimesteps = 100,
 							kTransient = 40;
 
+	srand(time(0));
 
 	std::cout << "program started" << std::endl;
 //initialise populations  
