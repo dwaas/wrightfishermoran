@@ -118,9 +118,9 @@ double DiscreteDerivative::operator ()(int arg)
  * =====================================================================================
  */
 bool
-IsFPESolution(std::function<double (int x, unsigned t)> f, 
+IsFPESolution(std::function<double (int x, unsigned t)>& f, 
 		int x_min, int x_max,
-		unsigned t_min, unsigned t_max)
+		unsigned t_min, unsigned t_max) const
 {
 	for(int x = x_min; x < x_max; ++x)
 	{

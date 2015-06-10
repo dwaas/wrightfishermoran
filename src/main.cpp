@@ -36,9 +36,10 @@
 #include <time.h> 			//time()
 
 
-//TODO random
 
 // FUTURE UPGRADES
+//TODO list instead of vector
+//TODO random
 //TODO parallelisation
 //TODO wrapper class for function that includes domain
 //TODO fitting
