@@ -117,10 +117,10 @@ double DiscreteDerivative::operator ()(int arg)
  *  Description:  Numerical tolerance implemented; //TODO tweak number
  * =====================================================================================
  */
-bool
-IsFPESolution(std::function<double (int x, unsigned t)>& f, 
+const bool
+IsFPESolution(std::function<double (int x, unsigned t)> f,  
 		int x_min, int x_max,
-		unsigned t_min, unsigned t_max) const
+		unsigned t_min, unsigned t_max)//FIXME: needs reference but lambda doesn't like it
 {
 	for(int x = x_min; x < x_max; ++x)
 	{
