@@ -48,7 +48,7 @@
 //TODO templates in DiscreteDifferential
 
 
-int main(int argc,char* argv[])
+int main()
 {
 //definitions useful for numeric handling
 	typedef std::numeric_limits< double > double_limit;

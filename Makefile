@@ -22,11 +22,8 @@ INCLUDEDIR= include/
 RESULTSDIR= results/
 PLOTDIR= plot/
 
-ROOTLIBS= `root-config --libs`
-ROOTCFLAGS= `root-config --cflags`
 
-FLAGS+= -Wall -Wextra -pedantic -march=native -std=c++11# -pg -ftree-loop-im -fprofile-arcs -ftest-coverage #-funroll-loops 
-
+FLAGS+= -Wall -Wextra -Werror -pedantic -march=native -std=c++14
 DEBUGFLAGS= -O0 -g $(FLAGS)
 RUNFLAGS= -O3 $(FLAGS)
 debug=0
@@ -45,16 +42,16 @@ debug: clean new $(EXE)
 	gdb --args ./$(EXE) $(ARGS)
 
 $(EXE): $(OBJS)
-	$(CC) -o $@ $^ $(DEBUGFLAGS) $(ROOTLIBS)
+	$(CC) -o $@ $^ $(DEBUGFLAGS) 
 
 $(BUILDDIR)%.o:  $(SRCDIR)%.$(SRCEXT) $(DEPS) 
-	$(CC) -c -o $@ $< $(DEBUGFLAGS) $(ROOTCFLAGS)
+	$(CC) -c -o $@ $< $(DEBUGFLAGS) 
 else 
 $(EXE): $(OBJS)
-	$(CC) -o $@ $^ $(RUNFLAGS) $(ROOTLIBS)
+	$(CC) -o $@ $^ $(RUNFLAGS) 
 
 $(BUILDDIR)%.o:  $(SRCDIR)%.$(SRCEXT) $(DEPS) 
-	$(CC) -c -o $@ $< $(RUNFLAGS) $(ROOTCFLAGS)
+	$(CC) -c -o $@ $< $(RUNFLAGS) 
 
 run: $(EXE)
 	./$(EXE) $(ARGS)
@@ -62,8 +59,6 @@ run: $(EXE)
 
 endif
 
-#all:
-#	$(CC) $(FLAGS) $(SRCDIR)%.$(SRCEXT) -o $(EXE)
 
 clean: 
 	rm -f $(OBJS) $(EXE) gmon.out prof *.gcov *gcno
@@ -75,20 +70,3 @@ plot:
 
 
 .PHONY: plot new clean
-
-#PROFILING and DEBUGGING
-#prof:
-#	gprof $(EXE) gmon.out > prof
-
-
-#FLAGS=  -O3 -ipo -static  -c 
-#MAINFLAG=  -O3 -ipo -static
-
-#FLAGS= -openmp -parallel -O3 -ipo -static -c 
-#MAINFLAG= -openmp -parallel -O3 -ipo -static
-
-#FLAGS= -openmp -parallel -fast  -c
-#MAINFLAG= -openmp -parallel -fast 
-
-
-
