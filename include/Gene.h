@@ -1,19 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  Gene.h
- *
- *    Description:  Monoallelic Gene locus
- *
- *        Version:  1.0
- *        Created:  05/29/2015 02:28:52 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Devin Waas (), dsc.waas@gmail.com
- * =====================================================================================
- */
-
 #ifndef  Gene_INC
 #define  Gene_INC
 
@@ -24,49 +8,30 @@
 #include <vector>// std::vector
 
 
-/*
- * =====================================================================================
- *        Class:  Gene
- *  Description:  The class models a monoallelic Gene; 
- *  				the allele type is an unsigned int instead of the widely used char.
- * =====================================================================================
- */
+ //The class models a monoallelic Gene; the allele type is an unsigned int instead of the widely used char.
 class Gene
 {
-	public:
+public:
 
-		static const unsigned kNumAlleles = 2;
-		typedef unsigned Allele; // no negative numbers allowed
+        static const unsigned kNumAlleles = 2;
+        typedef unsigned Allele; 
 
-	/* ====================  LIFECYCLE     ======================================= */
-		Gene () : _allele(rand() % kNumAlleles) {};    							/* constructor      */
-		Gene ( const Allele &other )  : _allele( other % kNumAlleles) {}; 	
-		Gene ( const Gene &other ) : _allele(other._allele) {};   				/* copy constructor */
-		~Gene ();                            									/* destructor       */
+        Gene () : _allele(rand() % kNumAlleles) {};    							
+        Gene (const Allele &other)  : _allele(other % kNumAlleles) {}; 	
+        Gene (const Gene &other) : _allele(other._allele) {};   				
+        ~Gene ();                            									
 
+        Allele allele() const{return _allele;}
 
-		/* ====================  ACCESSORS     ======================================= */
+        Gene& operator = (const Gene &other);
 
-		Allele allele() const{return _allele; }
+private:
+        Allele _allele;
 
-		/* ====================  OPERATORS     ======================================= */
+        friend std::ostream & operator << (std::ostream &os, const Gene &obj);
+        friend bool operator == (const Gene &a, const Gene &b){ return (a._allele == b._allele); };
+        friend bool operator != (const Gene &a, const Gene &b){ return (a._allele != b._allele); };
 
-		Gene& operator = ( const Gene &other ); 								/* assignment operator */
+}; 
 
-	protected:
-
-	private:
-		/* ====================  DATA MEMBERS  ======================================= */
-	Allele _allele;
-
-		/* ====================  FRIENDSHIP  ======================================= */
-
-	friend std::ostream & operator << ( std::ostream &os, const Gene &obj );
-	friend bool operator == (const Gene &a, const Gene &b){ return (a._allele == b._allele); };
-	friend bool operator != (const Gene &a, const Gene &b){ return (a._allele != b._allele); };
-	
-
-}; /* -----  end of class Gene  ----- */
-
-
-#endif   /* ----- #ifndef Gene_INC  ----- */
+#endif
